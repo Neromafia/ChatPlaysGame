@@ -6,7 +6,7 @@
     <title>Cửa Hàng Vật Phẩm - ChatPlaysGame</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* Global Styles */
+        /* (Toàn bộ CSS giữ nguyên như cũ... bạn không cần thay đổi gì ở đây) */
         body {
             font-family: 'Roboto', sans-serif;
             background: linear-gradient(135deg, #1e1e2d 0%, #0a0a1a 100%);
@@ -15,9 +15,9 @@
             padding: 0;
             display: flex;
             justify-content: center;
-            align-items: flex-start; /* Căn lề trên */
+            align-items: flex-start;
             min-height: 100vh;
-            padding-top: 40px; /* Khoảng cách từ lề trên */
+            padding-top: 40px;
             box-sizing: border-box;
         }
 
@@ -69,7 +69,6 @@
             border-radius: 2px;
         }
 
-        /* Shop Items (Step 1) */
         #shop-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -116,13 +115,12 @@
             margin-bottom: 8px;
         }
         .item-price {
-            color: #28a745; /* Green for price */
+            color: #28a745;
             font-weight: 700;
             font-size: 1.4em;
             letter-spacing: 0.02em;
         }
 
-        /* User Input (Step 2) */
         #user-input-container {
             display: none;
             padding: 30px;
@@ -149,7 +147,7 @@
         }
         .summary-row span:last-child { 
             font-weight: 700; 
-            color: #28a745; /* Green for price summary */
+            color: #28a745;
         }
         
         label {
@@ -160,7 +158,7 @@
             color: #bbbbbb;
         }
         input[type="text"] {
-            width: calc(100% - 24px); /* Full width minus padding */
+            width: calc(100% - 24px);
             padding: 12px;
             font-size: 1.1em;
             border: 1px solid #4a4a6e;
@@ -176,26 +174,25 @@
             box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.3);
         }
         .warning {
-            color: #dc3545; /* Red for warning */
+            color: #dc3545;
             font-weight: 600;
             margin-bottom: 25px;
             font-size: 0.95em;
             line-height: 1.4;
         }
         
-        /* QR Container (Step 3) */
         #qr-container {
             display: none;
             padding: 30px;
             text-align: center;
         }
         #qr-image {
-            width: 280px; /* Slightly larger QR */
+            width: 280px;
             height: 280px;
             border: 4px solid #007bff;
             border-radius: 12px;
             box-shadow: 0 0 15px rgba(0, 123, 255, 0.5);
-            background-color: white; /* QR is usually white */
+            background-color: white;
         }
         #qr-info {
             background-color: #1e1e2d;
@@ -213,7 +210,6 @@
             font-size: 1.1em;
         }
 
-        /* Buttons */
         .button {
             background-color: #007bff;
             color: white;
@@ -245,7 +241,6 @@
             transform: none;
         }
 
-        /* Responsive Adjustments */
         @media (max-width: 600px) {
             body { padding-top: 20px; }
             .container { width: 95%; }
@@ -305,7 +300,7 @@
             <h2>3. Quét mã VietQR để thanh toán</h2>
             <p>Sử dụng ứng dụng ngân hàng của bạn để quét mã QR bên dưới. Vật phẩm sẽ được gửi vào tài khoản TikTok của bạn sau 1-2 phút.</p>
             
-            <img id="qr-image" src="" alt="Đang tạo mã QR...">
+            <img id="qr-image" src="" alt="Đang tạo mã QR..." referrerpolicy="no-referrer">
             
             <div id="qr-info">
                 Nội dung chuyển khoản (Đã tự động điền):<br>
@@ -320,14 +315,12 @@
     <script>
         // ========== 1. CẤU HÌNH SHOP VÀ NGÂN HÀNG (Dữ liệu của bạn) ==========
         
-        // Thông tin ngân hàng của bạn
         const BANK_INFO = {
             BANK_ID: "970423",     // BIN của TPBank
             ACCOUNT_NO: "88942689999", // STK của bạn
             ACCOUNT_NAME: "NGUYEN TRAN HIEU NHAN" // <-- !!! THAY TÊN CỦA BẠN VÀO ĐÂY (VIẾT HOA, KHÔNG DẤU)
         };
 
-        // Danh sách vật phẩm (Lấy từ PRICE_MAP và get_item_details của bạn)
         const SHOP_ITEMS = [
             { sku: 'BOX1', name: 'Gói 1 Box', price: 5000, description: 'Mở khóa 1 Hộp May Mắn' },
             { sku: 'KEY1', name: 'Gói 1 Key', price: 10000, description: 'Mở khóa 1 Chìa Khóa' },
@@ -343,18 +336,15 @@
             { sku: 'EXP7NGAY', name: 'EXP Boost (7 Ngày)', price: 120000, description: 'Tăng tốc độ nhận EXP trong 1 tuần' },
         ];
 
-        // Biến tạm để lưu lựa chọn
         let selectedItem = null;
 
         // ========== 2. CÁC HÀM XỬ LÝ GIAO DIỆN VÀ LOGIC ==========
 
-        // Tự động tạo danh sách shop khi tải trang
         window.onload = function() {
             const shopContainer = document.getElementById('shop-container');
             
             SHOP_ITEMS.forEach(item => {
                 const formattedPrice = item.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-                
                 const itemHTML = `
                     <div class="shop-item" onclick="selectItem('${item.sku}', ${item.price}, '${item.name}', '${item.description}')">
                         <div class="item-name">${item.name}</div>
@@ -364,33 +354,29 @@
                 shopContainer.innerHTML += itemHTML;
             });
 
-            // Mặc định ẩn các bước 2 và 3
             document.getElementById('step2-user-input').style.display = 'none';
             document.getElementById('step3-qr').style.display = 'none';
         };
 
-        // Khi người dùng CHỌN 1 vật phẩm
         function selectItem(sku, price, name, description) {
             selectedItem = { sku, price, name, description }; 
             
             document.getElementById('summary-name').innerText = name;
             document.getElementById('summary-price').innerText = price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
 
-            document.getElementById('step1-shop').style.display = 'block'; // Hiển thị bước 1
-            document.getElementById('step2-user-input').style.display = 'block'; // Hiển thị bước 2
-            document.getElementById('step3-qr').style.display = 'none'; // Ẩn bước 3
+            document.getElementById('step1-shop').style.display = 'block';
+            document.getElementById('step2-user-input').style.display = 'block';
+            document.getElementById('step3-qr').style.display = 'none';
             
-            // Cuộn đến bước 2
             document.getElementById('step2-user-input').scrollIntoView({ behavior: 'smooth' });
             document.getElementById('tiktok-id').focus();
         }
 
-        // Khi người dùng nhấn nút "Tạo Mã QR" (PHIÊN BẢN ĐÃ SỬA API)
+        // (HÀM NÀY GIỮ NGUYÊN TỪ PHIÊN BẢN TRƯỚC - VÌ NÓ ĐÃ ĐÚNG)
         function generateQR() {
             const tiktokIdInput = document.getElementById('tiktok-id');
             let tiktokId = tiktokIdInput.value;
 
-            // 1. Kiểm tra ID
             if (!tiktokId) {
                 alert('Vui lòng nhập ID TikTok của bạn!');
                 tiktokIdInput.focus();
@@ -402,47 +388,34 @@
                 return;
             }
 
-            // 2. Xử lý ID (Xóa @, xóa cách, chuyển thành chữ HOA)
             tiktokId = tiktokId.replace('@', '').trim().toUpperCase();
-
-            // 3. Tạo nội dung chuyển khoản (Rất quan trọng)
             const addInfo = `${selectedItem.sku} ${tiktokId}`;
             
-            // 4. --- LOGIC MỚI: SỬ DỤNG API QUICK LINK ---
-            // Cú pháp: https://img.vietqr.io/image/<BANK_ID>-<ACCOUNT_NO>-<TEMPLATE>.png?amount=<AMOUNT>&addInfo=<INFO>&accountName=<NAME>
-            
             const amount = selectedItem.price;
-            const template = "compact2"; // Mẫu QR có đủ thông tin
+            const template = "compact2";
             const vietQR_API_URL = "https://img.vietqr.io/image/";
 
-            // Đảm bảo mã hóa (encode) nội dung và tên tài khoản
             const fullURL = `${vietQR_API_URL}${BANK_INFO.BANK_ID}-${BANK_INFO.ACCOUNT_NO}-${template}.png?amount=${amount}&addInfo=${encodeURIComponent(addInfo)}&accountName=${encodeURIComponent(BANK_INFO.ACCOUNT_NAME)}`;
 
-            // 5. Hiển thị mã QR
-            // Gán thẳng URL của API vào ảnh
             document.getElementById('qr-image').src = fullURL;
             document.getElementById('qr-content').innerText = addInfo; 
 
             document.getElementById('step2-user-input').style.display = 'none';
             document.getElementById('step3-qr').style.display = 'block';
             
-            // Cuộn đến bước 3
              document.getElementById('step3-qr').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // Quay lại chọn gói
         function goBackToShop() {
             document.getElementById('step1-shop').style.display = 'block';
             document.getElementById('step2-user-input').style.display = 'none';
             document.getElementById('step3-qr').style.display = 'none';
             selectedItem = null; 
-            document.getElementById('tiktok-id').value = ''; // Xóa ID đã nhập
+            document.getElementById('tiktok-id').value = '';
             
-             // Cuộn lên đầu
             document.getElementById('step1-shop').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // Bắt đầu lại từ đầu
         function startOver() {
             document.getElementById('step1-shop').style.display = 'block';
             document.getElementById('step2-user-input').style.display = 'none';
@@ -452,7 +425,6 @@
             document.getElementById('qr-image').src = '';
             document.getElementById('qr-content').innerText = '';
             
-             // Cuộn lên đầu
             document.getElementById('step1-shop').scrollIntoView({ behavior: 'smooth' });
         }
 
