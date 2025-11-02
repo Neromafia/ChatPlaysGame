@@ -6,7 +6,7 @@
     <title>Cửa Hàng Vật Phẩm - ChatPlaysGame</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* (Toàn bộ CSS giữ nguyên như cũ... ) */
+        /* (CSS cũ giữ nguyên) */
         body {
             font-family: 'Roboto', sans-serif;
             background: linear-gradient(135deg, #1e1e2d 0%, #0a0a1a 100%);
@@ -20,7 +20,7 @@
             padding-top: 40px;
             box-sizing: border-box;
         }
- 
+
         .container {
             max-width: 650px;
             width: 90%;
@@ -69,13 +69,38 @@
             border-radius: 2px;
         }
 
+        /* --- THAY ĐỔI CSS --- */
+        
+        /* 1. CSS MỚI: Tiêu đề cho từng nhóm */
+        .group-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1.4em;
+            color: #ffffff;
+            text-align: left;
+            margin-top: 30px; /* (Chỉ áp dụng cho nhóm đầu tiên) */
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #4a4a6e;
+        }
+        .group-title:first-of-type {
+             margin-top: 0;
+        }
+
+        /* 2. SỬA LẠI: #shop-container không còn là grid nữa */
         #shop-container {
+            margin-top: 30px;
+            /* Xóa: display: grid và gap */
+        }
+
+        /* 3. CSS MỚI: Lưới cho các item (lấy style cũ của #shop-container) */
+        .shop-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 20px;
-            margin-top: 30px;
         }
 
+        /* (CSS cho .shop-item và các thành phần khác giữ nguyên) */
         .shop-item {
             background-color: #3b3b5b;
             border-radius: 10px;
@@ -122,7 +147,6 @@
         }
 
         #user-input-container {
-            /* (display: block; - Bật mặc định) */
             padding: 30px;
             text-align: center;
         }
@@ -196,7 +220,6 @@
             max-width: 100%;
             height: auto;
         }
-        /* (CSS cho #qr-info đã bị xóa) */
 
         .button {
             background-color: #007bff;
@@ -235,7 +258,11 @@
             .header { font-size: 1.5em; padding: 20px; }
             h2 { font-size: 1.3em; margin-bottom: 20px; }
             .step { padding: 20px; }
-            #shop-container { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+            /* Sửa lại CSS Responsive */
+            .shop-grid { 
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); 
+                gap: 10px; 
+            }
             .shop-item { padding: 15px; }
             .item-name { font-size: 1.1em; }
             .item-price { font-size: 1.2em; }
@@ -303,57 +330,91 @@
             ACCOUNT_NAME: "NGUYEN TRAN HIEU NHAN" // <-- Tên chủ TK
         };
 
-        // Danh sách vật phẩm
-        const SHOP_ITEMS = [
-            { sku: 'BOX1', name: 'Gói 1 Box', price: 5000, description: 'Mở khóa 1 Hộp May Mắn' },
-            { sku: 'KEY1', name: 'Gói 1 Key', price: 10000, description: 'Mở khóa 1 Chìa Khóa' },
-            { sku: 'GOI1', name: 'Gói 1 Key + 1 Box', price: 13000, description: 'Combo siêu tiết kiệm!' },
-            { sku: 'NHANDOI', name: 'Vé X2 Thưởng', price: 30000, description: 'Nhân đôi phần thưởng khi thắng vote' },
-            { sku: 'EXP1NGAY', name: 'EXP Boost (1 Ngày)', price: 30000, description: 'Tăng tốc độ nhận EXP trong 24h' },
-            { sku: 'BAOHIEM', name: 'Bảo hiểm Vote (VIP)', price: 50000, description: 'Bảo toàn số Token khi thua vote' },
-            { sku: 'KEY2', name: 'Gói 6 Keys', price: 50000, description: 'Gói chìa khóa lớn hơn' },
-            { sku: 'GOI2', name: 'Gói 4 Keys + 4 Boxes', price: 50000, description: 'Combo mạnh mẽ hơn' },
-            { sku: 'EXP3NGAY', name: 'EXP Boost (3 Ngày)', price: 60000, description: 'Tăng tốc độ nhận EXP trong 72h' },
-            { sku: 'KEY3', name: 'Gói 13 Keys', price: 100000, description: 'Số lượng chìa khóa lớn' },
-            { sku: 'GOI3', name: 'Gói 8 Keys + 8 Boxes', price: 100000, description: 'Combo siêu giá trị' },
-            { sku: 'EXP7NGAY', name: 'EXP Boost (7 Ngày)', price: 120000, description: 'Tăng tốc độ nhận EXP trong 1 tuần' },
+        // *** THAY ĐỔI CẤU TRÚC DỮ LIỆU ***
+        // (Thay vì SHOP_ITEMS, chúng ta dùng SHOP_GROUPS)
+        const SHOP_GROUPS = [
+            {
+                groupName: "Gói Combo (Key + Box)",
+                items: [
+                    { sku: 'GOI1', name: 'Gói 1 Key + 1 Box', price: 13000, description: 'Combo siêu tiết kiệm!' },
+                    { sku: 'GOI2', name: 'Gói 4 Keys + 4 Boxes', price: 50000, description: 'Combo mạnh mẽ hơn' },
+                    { sku: 'GOI3', name: 'Gói 8 Keys + 8 Boxes', price: 100000, description: 'Combo siêu giá trị' }
+                ]
+            },
+            {
+                groupName: "Gói Gacha Lẻ (Key/Box)",
+                items: [
+                    { sku: 'KEY1', name: 'Gói 1 Key', price: 10000, description: 'Mở khóa 1 Chìa Khóa' },
+                    { sku: 'KEY2', name: 'Gói 6 Keys', price: 50000, description: 'Gói chìa khóa lớn hơn' },
+                    { sku: 'KEY3', name: 'Gói 13 Keys', price: 100000, description: 'Số lượng chìa khóa lớn' },
+                    { sku: 'BOX1', name: 'Gói 1 Box', price: 5000, description: 'Mở khóa 1 Hộp May Mắn' }
+                ]
+            },
+            {
+                groupName: "Vật Phẩm Hỗ Trợ",
+                items: [
+                    { sku: 'NHANDOI', name: 'Vé X2 Thưởng', price: 30000, description: 'Nhân đôi phần thưởng khi thắng vote' },
+                    { sku: 'BAOHIEM', name: 'Bảo hiểm Vote (VIP)', price: 50000, description: 'Bảo toàn số Token khi thua vote' },
+                    { sku: 'EXP1NGAY', name: 'EXP Boost (1 Ngày)', price: 30000, description: 'Tăng tốc độ nhận EXP trong 24h' },
+                    { sku: 'EXP3NGAY', name: 'EXP Boost (3 Ngày)', price: 60000, description: 'Tăng tốc độ nhận EXP trong 72h' },
+                    { sku: 'EXP7NGAY', name: 'EXP Boost (7 Ngày)', price: 120000, description: 'Tăng tốc độ nhận EXP trong 1 tuần' }
+                ]
+            }
         ];
 
         // ========== 2. CÁC HÀM XỬ LÝ GIAO DIỆN VÀ LOGIC ==========
 
-        // Tải trang: Tạo shop, hiển thị bước 1
+        // *** CẬP NHẬT HÀM: window.onload ***
+        // (Tải trang: Tạo shop theo nhóm, hiển thị bước 1)
         window.onload = function() {
             const shopContainer = document.getElementById('shop-container');
-            
-            SHOP_ITEMS.forEach(item => {
-                const formattedPrice = item.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-                const itemHTML = `
-                    <div class="shop-item" onclick="selectItem('${item.sku}', ${item.price}, '${item.name}', '${item.description}')">
-                        <div class="item-name">${item.name}</div>
-                        <div class="item-price">${formattedPrice}</div>
-                    </div>
-                `;
-                shopContainer.innerHTML += itemHTML;
+            shopContainer.innerHTML = ''; // Xóa sạch nội dung cũ
+
+            // Lặp qua từng NHÓM
+            SHOP_GROUPS.forEach(group => {
+                // 1. Tạo tiêu đề nhóm
+                const groupTitle = document.createElement('h3');
+                groupTitle.className = 'group-title';
+                groupTitle.innerText = group.groupName;
+                shopContainer.appendChild(groupTitle);
+
+                // 2. Tạo lưới (grid) cho các item
+                const gridContainer = document.createElement('div');
+                gridContainer.className = 'shop-grid';
+
+                // 3. Lặp qua các ITEM trong nhóm
+                group.items.forEach(item => {
+                    const formattedPrice = item.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                    // Lưu ý: onclick="selectItem(...)" giữ nguyên
+                    const itemHTML = `
+                        <div class="shop-item" onclick="selectItem('${item.sku}', ${item.price}, '${item.name}', '${item.description}')">
+                            <div class="item-name">${item.name}</div>
+                            <div class="item-price">${formattedPrice}</div>
+                        </div>
+                    `;
+                    gridContainer.innerHTML += itemHTML;
+                });
+                
+                // Thêm lưới vào container shop
+                shopContainer.appendChild(gridContainer);
             });
 
-            // Mặc định hiển thị Bước 1
+            // (Phần logic hiển thị các bước giữ nguyên)
             document.getElementById('step1-user-input').style.display = 'block';
             document.getElementById('step2-shop').style.display = 'none';
             document.getElementById('step3-qr').style.display = 'none';
 
-            // Cố gắng tải lại ID đã lưu nếu có
             const savedId = sessionStorage.getItem('tiktokId');
             if (savedId) {
                 document.getElementById('tiktok-id').value = savedId;
             }
         };
 
-        // *** HÀM MỚI *** (Từ Bước 1 sang Bước 2)
+        // (Hàm này giữ nguyên)
         function goToShop() {
             const tiktokIdInput = document.getElementById('tiktok-id');
             let tiktokId = tiktokIdInput.value;
 
-            // 1. Kiểm tra ID
             if (!tiktokId) {
                 alert('Vui lòng nhập ID TikTok của bạn!');
                 tiktokIdInput.focus();
@@ -365,11 +426,9 @@
                 return;
             }
 
-            // 2. Xử lý và Lưu ID
             tiktokId = tiktokId.replace('@', '').trim().toUpperCase();
             sessionStorage.setItem('tiktokId', tiktokId);
 
-            // 3. Cập nhật tóm tắt và chuyển
             document.getElementById('summary-id').innerText = tiktokId;
             
             document.getElementById('step1-user-input').style.display = 'none';
@@ -380,10 +439,8 @@
         }
 
 
-        // *** HÀM ĐÃ SỬA *** (Từ Bước 2 sang Bước 3)
-        // (Đổi tên: selectItem -> generateQR)
+        // (Hàm này giữ nguyên)
         function selectItem(sku, price, name, description) {
-            // 1. Lấy ID đã lưu
             let tiktokId = sessionStorage.getItem('tiktokId');
             if (!tiktokId) {
                 alert('Lỗi: Không tìm thấy ID TikTok. Vui lòng quay lại Bước 1.');
@@ -391,19 +448,15 @@
                 return;
             }
 
-            // 2. Tạo nội dung
             const addInfo = `${sku} ${tiktokId}`;
             const amount = price;
             
-            // 3. Tạo URL
-            const template = "print"; // Template "print"
+            const template = "print";
             const vietQR_API_URL = "https://img.vietqr.io/image/";
             const fullURL = `${vietQR_API_URL}${BANK_INFO.BANK_ID}-${BANK_INFO.ACCOUNT_NO}-${template}.png?amount=${amount}&addInfo=${encodeURIComponent(addInfo)}&accountName=${encodeURIComponent(BANK_INFO.ACCOUNT_NAME)}`;
 
-            // 4. Gán URL cho ảnh
             document.getElementById('qr-image').src = fullURL;
 
-            // 5. Chuyển sang Bước 3
             document.getElementById('step1-user-input').style.display = 'none';
             document.getElementById('step2-shop').style.display = 'none';
             document.getElementById('step3-qr').style.display = 'block';
@@ -411,7 +464,7 @@
              document.getElementById('step3-qr').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // *** HÀM MỚI *** (Từ Bước 2 quay lại Bước 1)
+        // (Hàm này giữ nguyên)
         function goBackToEnterId() {
             document.getElementById('step1-user-input').style.display = 'block';
             document.getElementById('step2-shop').style.display = 'none';
@@ -420,13 +473,13 @@
             document.getElementById('step1-user-input').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // *** HÀM ĐÃ SỬA *** (Từ Bước 3 quay lại Bước 2)
+        // (Hàm này giữ nguyên)
         function goBackToShop() {
             document.getElementById('step1-user-input').style.display = 'none';
             document.getElementById('step2-shop').style.display = 'block';
             document.getElementById('step3-qr').style.display = 'none';
             
-            document.getElementById('qr-image').src = ''; // Xóa QR
+            document.getElementById('qr-image').src = '';
             
             document.getElementById('step2-shop').scrollIntoView({ behavior: 'smooth' });
         }
@@ -434,6 +487,3 @@
     </script>
 </body>
 </html>
-
-
-
