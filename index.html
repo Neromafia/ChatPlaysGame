@@ -411,7 +411,7 @@
             const amount = selectedItem.price;
             const vietQR_API_URL = "https://api.vietqr.io/v2/generate";
             
-            const fullURL = `${vietQR_API_URL}?acqId=${BANK_INFO.BANK_ID}&accountNo=${BANK_INFO.ACCOUNT_NO}&amount=${amount}&addInfo=${encodeURIComponent(addInfo)}&bankName=${BANK_INFO.ACCOUNT_NAME}`;
+            const fullURL = `${vietQR_API_URL}?acqId=${BANK_INFO.BANK_ID}&accountNo=${BANK_INFO.ACCOUNT_NO}&amount=${amount}&addInfo=${encodeURIComponent(addInfo)}&bankName=${encodeURIComponent(BANK_INFO.ACCOUNT_NAME)}`;
 
             // 5. Hiển thị mã QR
             document.getElementById('qr-image').src = fullURL;
@@ -440,4 +440,5 @@
 
     </script>
 </body>
+
 </html>
