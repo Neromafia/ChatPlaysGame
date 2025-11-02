@@ -122,7 +122,7 @@
         }
 
         #user-input-container {
-            display: none;
+            /* (display: block; - Bật mặc định) */
             padding: 30px;
             text-align: center;
         }
@@ -196,21 +196,7 @@
             max-width: 100%;
             height: auto;
         }
-        #qr-info {
-            background-color: #1e1e2d;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 25px;
-            font-weight: 600;
-            word-break: break-all;
-            border: 1px solid #4a4a6e;
-        }
-        #qr-content {
-            display: block;
-            margin-top: 5px;
-            color: #28a745;
-            font-size: 1.1em;
-        }
+        /* (CSS cho #qr-info đã bị xóa) */
 
         .button {
             background-color: #007bff;
@@ -264,38 +250,37 @@
 
     <div class="container">
         
-        <div id="step1-shop" class="step">
+        <div id="step1-user-input" class="step">
             <div class="header">Cửa Hàng Vật Phẩm - ChatPlaysGame</div>
-            <h2>1. Vui lòng chọn gói nạp</h2>
-            <div id="shop-container">
-                </div>
-        </div>
-
-        <div id="step2-user-input" class="step" style="display: none;">
-            <div class="header">Xác Nhận Đơn Hàng</div>
-            <h2>2. Nhập ID TikTok của bạn</h2>
-
-            <div id="summary-box">
-                <div class="summary-row">
-                    <span>Gói đã chọn:</span>
-                    <span id="summary-name"></span>
-                </div>
-                <div class="summary-row">
-                    <span>Tổng thanh toán:</span>
-                    <span id="summary-price"></span>
-                </div>
-            </div>
+            <h2>1. Nhập ID TikTok của bạn</h2>
             
             <label for="tiktok-id">ID TikTok của bạn (Chỉ nhập tên, không có @)</label>
             <input type="text" id="tiktok-id" placeholder="ví dụ: ChatPlaysGameOfficial" maxlength="24">
             
             <p class="warning">
-                ⚠️ CẢNH BÁO: VUI LÒNG KIỂM TRA LẠI ID TIKTOK THẬT KỸ! NẾU BẠN GÕ SAI, VẬT PHẨM SẼ BỊ GỬI NHẦM VÀ CHÚNG TÔI KHÔNG THỂ HỖ TRỢ HOÀN TIỀN/CHUYỂN GÓI.
+                ⚠️ CẢNH BÁO: VUI LÒNG KIỂM TRA LẠI ID TIKTOK THẬT KỸ! NẾU BẠN GÕ SAI, VẬT PHẨM SẼ BỊ GỬI NHẦM VÀ CHÚNG TÔI KHÔNG THỂ HỖ TRỢ.
             </p>
             
-            <button class="button" onclick="generateQR()">Tạo Mã QR Thanh Toán</button>
-            <button class="button button-secondary" onclick="goBackToShop()">&#x2190; Quay lại chọn gói</button>
+            <button class="button" onclick="goToShop()">Tiếp Tục Chọn Gói Hàng</button>
         </div>
+
+        <div id="step2-shop" class="step" style="display: none;">
+            <div class="header">Chọn Gói Nạp</div>
+            <h2>2. Vui lòng chọn gói nạp</h2>
+            
+            <div id="summary-box">
+                <div class="summary-row">
+                    <span>Đang nạp cho ID:</span>
+                    <span id="summary-id" style="color: #28a745;"></span>
+                </div>
+            </div>
+
+            <div id="shop-container">
+                </div>
+
+            <button class="button button-secondary" onclick="goBackToEnterId()">&#x2190; Quay lại (Đổi ID)</button>
+        </div>
+
 
         <div id="step3-qr" class="step" style="display: none;">
             <div class="header">Hoàn Tất Thanh Toán</div>
@@ -304,12 +289,7 @@
             
             <img id="qr-image" src="" alt="Đang tạo mã QR..." referrerpolicy="no-referrer">
             
-            <div id="qr-info">
-                Nội dung chuyển khoản (Đã tự động điền):<br>
-                <span id="qr-content"></span>
-            </div>
-            
-            <button class="button" onclick="startOver()">Nạp gói khác / Quay lại trang chủ</button>
+            <button class="button" onclick="goBackToShop()">Nạp gói khác / Quay lại Shop</button>
         </div>
 
     </div>
@@ -320,7 +300,7 @@
         const BANK_INFO = {
             BANK_ID: "tpbank",     // Dùng tên ngân hàng
             ACCOUNT_NO: "88942689999", // STK của bạn
-            ACCOUNT_NAME: "NGUYEN TRAN HIEU NHAN" // <-- Tên chủ TK (đã điền theo ví dụ của bạn)
+            ACCOUNT_NAME: "NGUYEN TRAN HIEU NHAN" // <-- Tên chủ TK
         };
 
         // Danh sách vật phẩm
@@ -340,11 +320,9 @@
             { sku: 'KEY4', name: 'Gói Key Khủng', price: 500000, description: 'Gói chìa khóa lớn nhất (500k)' } 
         ];
 
-        // Biến tạm để lưu lựa chọn (Sử dụng sessionStorage để lưu nếu F5)
-        let selectedItem = null;
-
         // ========== 2. CÁC HÀM XỬ LÝ GIAO DIỆN VÀ LOGIC ==========
 
+        // Tải trang: Tạo shop, hiển thị bước 1
         window.onload = function() {
             const shopContainer = document.getElementById('shop-container');
             
@@ -359,41 +337,20 @@
                 shopContainer.innerHTML += itemHTML;
             });
 
-            // Mặc định ẩn các bước 2 và 3
-            document.getElementById('step2-user-input').style.display = 'none';
+            // Mặc định hiển thị Bước 1
+            document.getElementById('step1-user-input').style.display = 'block';
+            document.getElementById('step2-shop').style.display = 'none';
             document.getElementById('step3-qr').style.display = 'none';
+
+            // Cố gắng tải lại ID đã lưu nếu có
+            const savedId = sessionStorage.getItem('tiktokId');
+            if (savedId) {
+                document.getElementById('tiktok-id').value = savedId;
+            }
         };
 
-        function selectItem(sku, price, name, description) {
-            selectedItem = { sku, price, name, description }; 
-            // Lưu vào sessionStorage để tránh lỗi F5
-            sessionStorage.setItem('selectedItem', JSON.stringify(selectedItem));
-            
-            document.getElementById('summary-name').innerText = name;
-            document.getElementById('summary-price').innerText = price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-
-            document.getElementById('step1-shop').style.display = 'block';
-            document.getElementById('step2-user-input').style.display = 'block';
-            document.getElementById('step3-qr').style.display = 'none';
-            
-            document.getElementById('step2-user-input').scrollIntoView({ behavior: 'smooth' });
-            document.getElementById('tiktok-id').focus();
-        }
-
-        // *** HÀM generateQR() ĐÃ CẬP NHẬT CÚ PHÁP VÀ SỬA LỖI F5 ***
-        function generateQR() {
-            // Lấy lại item từ sessionStorage nếu bị F5 làm mất
-            if (!selectedItem) {
-                selectedItem = JSON.parse(sessionStorage.getItem('selectedItem'));
-            }
-
-            // Kiểm tra lần cuối, nếu vẫn lỗi thì yêu cầu chọn lại
-            if (!selectedItem) {
-                alert('Đã xảy ra lỗi! Không tìm thấy gói hàng đã chọn. Vui lòng quay lại và CHỌN LẠI gói hàng.');
-                goBackToShop();
-                return;
-            }
-
+        // *** HÀM MỚI *** (Từ Bước 1 sang Bước 2)
+        function goToShop() {
             const tiktokIdInput = document.getElementById('tiktok-id');
             let tiktokId = tiktokIdInput.value;
 
@@ -409,51 +366,70 @@
                 return;
             }
 
-            // 2. Xử lý ID
+            // 2. Xử lý và Lưu ID
             tiktokId = tiktokId.replace('@', '').trim().toUpperCase();
+            sessionStorage.setItem('tiktokId', tiktokId);
+
+            // 3. Cập nhật tóm tắt và chuyển
+            document.getElementById('summary-id').innerText = tiktokId;
             
-            // 3. Tạo nội dung (addInfo)
-            const addInfo = `${selectedItem.sku} ${tiktokId}`;
-            const amount = selectedItem.price;
+            document.getElementById('step1-user-input').style.display = 'none';
+            document.getElementById('step2-shop').style.display = 'block';
+            document.getElementById('step3-qr').style.display = 'none';
             
-            // 4. Tạo URL theo cú pháp chính xác bạn cung cấp
+            document.getElementById('step2-shop').scrollIntoView({ behavior: 'smooth' });
+        }
+
+
+        // *** HÀM ĐÃ SỬA *** (Từ Bước 2 sang Bước 3)
+        // (Đổi tên: selectItem -> generateQR)
+        function selectItem(sku, price, name, description) {
+            // 1. Lấy ID đã lưu
+            let tiktokId = sessionStorage.getItem('tiktokId');
+            if (!tiktokId) {
+                alert('Lỗi: Không tìm thấy ID TikTok. Vui lòng quay lại Bước 1.');
+                goBackToEnterId();
+                return;
+            }
+
+            // 2. Tạo nội dung
+            const addInfo = `${sku} ${tiktokId}`;
+            const amount = price;
+            
+            // 3. Tạo URL
             const template = "print"; // Template "print"
             const vietQR_API_URL = "https://img.vietqr.io/image/";
-
             const fullURL = `${vietQR_API_URL}${BANK_INFO.BANK_ID}-${BANK_INFO.ACCOUNT_NO}-${template}.png?amount=${amount}&addInfo=${encodeURIComponent(addInfo)}&accountName=${encodeURIComponent(BANK_INFO.ACCOUNT_NAME)}`;
 
-            // 5. Gán URL cho ảnh
+            // 4. Gán URL cho ảnh
             document.getElementById('qr-image').src = fullURL;
-            document.getElementById('qr-content').innerText = addInfo; 
 
-            document.getElementById('step2-user-input').style.display = 'none';
+            // 5. Chuyển sang Bước 3
+            document.getElementById('step1-user-input').style.display = 'none';
+            document.getElementById('step2-shop').style.display = 'none';
             document.getElementById('step3-qr').style.display = 'block';
             
              document.getElementById('step3-qr').scrollIntoView({ behavior: 'smooth' });
         }
 
-        function goBackToShop() {
-            document.getElementById('step1-shop').style.display = 'block';
-            document.getElementById('step2-user-input').style.display = 'none';
+        // *** HÀM MỚI *** (Từ Bước 2 quay lại Bước 1)
+        function goBackToEnterId() {
+            document.getElementById('step1-user-input').style.display = 'block';
+            document.getElementById('step2-shop').style.display = 'none';
             document.getElementById('step3-qr').style.display = 'none';
-            selectedItem = null; 
-            sessionStorage.removeItem('selectedItem'); // Xóa item đã lưu
-            document.getElementById('tiktok-id').value = '';
             
-            document.getElementById('step1-shop').scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('step1-user-input').scrollIntoView({ behavior: 'smooth' });
         }
 
-        function startOver() {
-            document.getElementById('step1-shop').style.display = 'block';
-            document.getElementById('step2-user-input').style.display = 'none';
+        // *** HÀM ĐÃ SỬA *** (Từ Bước 3 quay lại Bước 2)
+        function goBackToShop() {
+            document.getElementById('step1-user-input').style.display = 'none';
+            document.getElementById('step2-shop').style.display = 'block';
             document.getElementById('step3-qr').style.display = 'none';
-            selectedItem = null;
-            sessionStorage.removeItem('selectedItem'); // Xóa item đã lưu
-            document.getElementById('tiktok-id').value = '';
-            document.getElementById('qr-image').src = '';
-            document.getElementById('qr-content').innerText = '';
             
-            document.getElementById('step1-shop').scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('qr-image').src = ''; // Xóa QR
+            
+            document.getElementById('step2-shop').scrollIntoView({ behavior: 'smooth' });
         }
 
     </script>
