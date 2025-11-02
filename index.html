@@ -6,7 +6,7 @@
     <title>Cửa Hàng Vật Phẩm - ChatPlaysGame</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* (Toàn bộ CSS giữ nguyên như cũ... bạn không cần thay đổi gì ở đây) */
+        /* (Toàn bộ CSS giữ nguyên như cũ... ) */
         body {
             font-family: 'Roboto', sans-serif;
             background: linear-gradient(135deg, #1e1e2d 0%, #0a0a1a 100%);
@@ -193,6 +193,8 @@
             border-radius: 12px;
             box-shadow: 0 0 15px rgba(0, 123, 255, 0.5);
             background-color: white;
+            max-width: 100%;
+            height: auto;
         }
         #qr-info {
             background-color: #1e1e2d;
@@ -316,11 +318,12 @@
         // ========== 1. CẤU HÌNH SHOP VÀ NGÂN HÀNG (Dữ liệu của bạn) ==========
         
         const BANK_INFO = {
-            BANK_ID: "970423",     // BIN của TPBank
+            BANK_ID: "tpbank",     // Dùng tên ngân hàng
             ACCOUNT_NO: "88942689999", // STK của bạn
-            ACCOUNT_NAME: "NGUYEN TRAN HIEU NHAN" // <-- !!! THAY TÊN CỦA BẠN VÀO ĐÂY (VIẾT HOA, KHÔNG DẤU)
+            ACCOUNT_NAME: "NGUYEN TRAN HIEU NHAN" // <-- Tên chủ TK (đã điền theo ví dụ của bạn)
         };
 
+        // Danh sách vật phẩm
         const SHOP_ITEMS = [
             { sku: 'BOX1', name: 'Gói 1 Box', price: 5000, description: 'Mở khóa 1 Hộp May Mắn' },
             { sku: 'KEY1', name: 'Gói 1 Key', price: 10000, description: 'Mở khóa 1 Chìa Khóa' },
@@ -334,8 +337,10 @@
             { sku: 'KEY3', name: 'Gói 13 Keys', price: 100000, description: 'Số lượng chìa khóa lớn' },
             { sku: 'GOI3', name: 'Gói 8 Keys + 8 Boxes', price: 100000, description: 'Combo siêu giá trị' },
             { sku: 'EXP7NGAY', name: 'EXP Boost (7 Ngày)', price: 120000, description: 'Tăng tốc độ nhận EXP trong 1 tuần' },
+            { sku: 'KEY4', name: 'Gói Key Khủng', price: 500000, description: 'Gói chìa khóa lớn nhất (500k)' } 
         ];
 
+        // Biến tạm để lưu lựa chọn (Sử dụng sessionStorage để lưu nếu F5)
         let selectedItem = null;
 
         // ========== 2. CÁC HÀM XỬ LÝ GIAO DIỆN VÀ LOGIC ==========
@@ -354,12 +359,15 @@
                 shopContainer.innerHTML += itemHTML;
             });
 
+            // Mặc định ẩn các bước 2 và 3
             document.getElementById('step2-user-input').style.display = 'none';
             document.getElementById('step3-qr').style.display = 'none';
         };
 
         function selectItem(sku, price, name, description) {
             selectedItem = { sku, price, name, description }; 
+            // Lưu vào sessionStorage để tránh lỗi F5
+            sessionStorage.setItem('selectedItem', JSON.stringify(selectedItem));
             
             document.getElementById('summary-name').innerText = name;
             document.getElementById('summary-price').innerText = price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
@@ -372,11 +380,24 @@
             document.getElementById('tiktok-id').focus();
         }
 
-        // (HÀM NÀY GIỮ NGUYÊN TỪ PHIÊN BẢN TRƯỚC - VÌ NÓ ĐÃ ĐÚNG)
+        // *** HÀM generateQR() ĐÃ CẬP NHẬT CÚ PHÁP VÀ SỬA LỖI F5 ***
         function generateQR() {
+            // Lấy lại item từ sessionStorage nếu bị F5 làm mất
+            if (!selectedItem) {
+                selectedItem = JSON.parse(sessionStorage.getItem('selectedItem'));
+            }
+
+            // Kiểm tra lần cuối, nếu vẫn lỗi thì yêu cầu chọn lại
+            if (!selectedItem) {
+                alert('Đã xảy ra lỗi! Không tìm thấy gói hàng đã chọn. Vui lòng quay lại và CHỌN LẠI gói hàng.');
+                goBackToShop();
+                return;
+            }
+
             const tiktokIdInput = document.getElementById('tiktok-id');
             let tiktokId = tiktokIdInput.value;
 
+            // 1. Kiểm tra ID
             if (!tiktokId) {
                 alert('Vui lòng nhập ID TikTok của bạn!');
                 tiktokIdInput.focus();
@@ -388,15 +409,20 @@
                 return;
             }
 
+            // 2. Xử lý ID
             tiktokId = tiktokId.replace('@', '').trim().toUpperCase();
-            const addInfo = `${selectedItem.sku} ${tiktokId}`;
             
+            // 3. Tạo nội dung (addInfo)
+            const addInfo = `${selectedItem.sku} ${tiktokId}`;
             const amount = selectedItem.price;
-            const template = "compact2";
+            
+            // 4. Tạo URL theo cú pháp chính xác bạn cung cấp
+            const template = "print"; // Template "print"
             const vietQR_API_URL = "https://img.vietqr.io/image/";
 
             const fullURL = `${vietQR_API_URL}${BANK_INFO.BANK_ID}-${BANK_INFO.ACCOUNT_NO}-${template}.png?amount=${amount}&addInfo=${encodeURIComponent(addInfo)}&accountName=${encodeURIComponent(BANK_INFO.ACCOUNT_NAME)}`;
 
+            // 5. Gán URL cho ảnh
             document.getElementById('qr-image').src = fullURL;
             document.getElementById('qr-content').innerText = addInfo; 
 
@@ -411,6 +437,7 @@
             document.getElementById('step2-user-input').style.display = 'none';
             document.getElementById('step3-qr').style.display = 'none';
             selectedItem = null; 
+            sessionStorage.removeItem('selectedItem'); // Xóa item đã lưu
             document.getElementById('tiktok-id').value = '';
             
             document.getElementById('step1-shop').scrollIntoView({ behavior: 'smooth' });
@@ -421,6 +448,7 @@
             document.getElementById('step2-user-input').style.display = 'none';
             document.getElementById('step3-qr').style.display = 'none';
             selectedItem = null;
+            sessionStorage.removeItem('selectedItem'); // Xóa item đã lưu
             document.getElementById('tiktok-id').value = '';
             document.getElementById('qr-image').src = '';
             document.getElementById('qr-content').innerText = '';
