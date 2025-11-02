@@ -3,144 +3,263 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cửa Hàng Vật Phẩm</title>
+    <title>Cửa Hàng Vật Phẩm - ChatPlaysGame</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* CSS Đơn giản để trang web dễ nhìn */
+        /* Global Styles */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f2f5;
-            color: #333;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #1e1e2d 0%, #0a0a1a 100%);
+            color: #e0e0e0;
             margin: 0;
-            padding: 20px;
+            padding: 0;
             display: flex;
             justify-content: center;
-        }
-        .container {
-            max-width: 600px;
-            width: 100%;
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-        .header {
-            background-color: #007bff;
-            color: white;
-            padding: 20px;
-            text-align: center;
-            font-size: 1.5em;
-        }
-        .step {
-            padding: 20px;
-        }
-        h2 {
-            border-bottom: 2px solid #007bff;
-            padding-bottom: 5px;
-            color: #007bff;
-        }
-        
-        /* Giai đoạn 1: Chọn Shop */
-        #shop-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-        }
-        .shop-item {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 15px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .shop-item:hover {
-            border-color: #007bff;
-            box-shadow: 0 2px 6px rgba(0, 123, 255, 0.2);
-            transform: translateY(-2px);
-        }
-        .item-name {
-            font-weight: bold;
-            font-size: 1.1em;
-            color: #333;
-        }
-        .item-price {
-            color: #d9534f;
-            font-weight: bold;
-            font-size: 1.2em;
-            margin-top: 5px;
+            align-items: flex-start; /* Align to top instead of center vertically */
+            min-height: 100vh;
+            padding-top: 40px; /* Add some space from the top */
+            box-sizing: border-box;
         }
 
-        /* Giai đoạn 2: Nhập ID */
-        #user-input-container {
-            display: none; /* Ẩn ban đầu */
+        .container {
+            max-width: 650px;
+            width: 90%;
+            background-color: #2a2a3e;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            border: 1px solid #4a4a6e;
         }
+
+        .header {
+            background-color: #007bff; /* Primary blue for header */
+            background: linear-gradient(90deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            padding: 25px;
+            text-align: center;
+            font-size: 1.8em;
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 0.05em;
+            border-bottom: 2px solid #004085;
+        }
+
+        .step {
+            padding: 30px;
+            text-align: center;
+        }
+
+        h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1.6em;
+            color: #007bff;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        h2::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 0;
+            width: 60px;
+            height: 3px;
+            background-color: #007bff;
+            border-radius: 2px;
+        }
+
+        /* Shop Items (Step 1) */
+        #shop-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .shop-item {
+            background-color: #3b3b5b;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #4a4a6e;
+            position: relative;
+            overflow: hidden;
+        }
+        .shop-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 123, 255, 0.1);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+        .shop-item:hover::before {
+            opacity: 1;
+        }
+        .shop-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 123, 255, 0.3);
+            border-color: #007bff;
+        }
+        .item-name {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1.2em;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+        .item-price {
+            color: #28a745; /* Green for price */
+            font-weight: 700;
+            font-size: 1.4em;
+            letter-spacing: 0.02em;
+        }
+
+        /* User Input (Step 2) */
+        #user-input-container {
+            display: none;
+            padding: 30px;
+            text-align: center;
+        }
+
         #summary-box {
-            background-color: #f9f9f9;
-            border: 1px dashed #ccc;
-            border-radius: 4px;
-            padding: 15px;
-            margin-bottom: 20px;
+            background-color: #3b3b5b;
+            border: 1px dashed #6a6a8e;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            text-align: left;
         }
         .summary-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            font-size: 1.1em;
         }
-        .summary-row span:first-child { font-weight: bold; }
-        .summary-row span:last-child { font-weight: bold; color: #d9534f; }
+        .summary-row span:first-child { 
+            font-weight: 600; 
+            color: #bbbbbb;
+        }
+        .summary-row span:last-child { 
+            font-weight: 700; 
+            color: #28a745; /* Green for price summary */
+        }
         
+        label {
+            display: block;
+            text-align: left;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #bbbbbb;
+        }
         input[type="text"] {
-            width: 95%;
+            width: calc(100% - 24px); /* Full width minus padding */
             padding: 12px;
-            font-size: 1em;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin-bottom: 10px;
+            font-size: 1.1em;
+            border: 1px solid #4a4a6e;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            background-color: #1e1e2d;
+            color: #e0e0e0;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+        input[type="text"]:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.3);
         }
         .warning {
-            color: #d9534f;
-            font-weight: bold;
-            margin-bottom: 15px;
+            color: #dc3545; /* Red for warning */
+            font-weight: 600;
+            margin-bottom: 25px;
+            font-size: 0.95em;
+            line-height: 1.4;
         }
         
-        /* Giai đoạn 3: Mã QR */
+        /* QR Container (Step 3) */
         #qr-container {
-            display: none; /* Ẩn ban đầu */
+            display: none;
+            padding: 30px;
             text-align: center;
         }
         #qr-image {
-            width: 250px;
-            height: 250px;
-            border: 2px solid #007bff;
-            border-radius: 8px;
+            width: 280px; /* Slightly larger QR */
+            height: 280px;
+            border: 4px solid #007bff;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 123, 255, 0.5);
+            background-color: white; /* QR is usually white */
         }
         #qr-info {
-            background-color: #f0f2f5;
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 15px;
-            font-weight: bold;
+            background-color: #1e1e2d;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 25px;
+            font-weight: 600;
             word-break: break-all;
+            border: 1px solid #4a4a6e;
+        }
+        #qr-content {
+            display: block;
+            margin-top: 5px;
+            color: #28a745;
+            font-size: 1.1em;
         }
 
-        /* Nút */
+        /* Buttons */
         .button {
             background-color: #007bff;
             color: white;
-            padding: 12px 20px;
+            padding: 14px 25px;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 1em;
+            font-size: 1.1em;
+            font-weight: 600;
             width: 100%;
-            margin-top: 10px;
+            margin-top: 15px;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 0.03em;
+        }
+        .button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
         }
         .button-secondary {
             background-color: #6c757d;
         }
+        .button-secondary:hover {
+            background-color: #5a6268;
+        }
         .button:disabled {
-            background-color: #ccc;
+            background-color: #4a4a6e;
             cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 600px) {
+            body { padding-top: 20px; }
+            .container { width: 95%; }
+            .header { font-size: 1.5em; padding: 20px; }
+            h2 { font-size: 1.3em; margin-bottom: 20px; }
+            .step { padding: 20px; }
+            #shop-container { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+            .shop-item { padding: 15px; }
+            .item-name { font-size: 1.1em; }
+            .item-price { font-size: 1.2em; }
+            input[type="text"] { font-size: 1em; padding: 10px; }
+            .button { padding: 12px 20px; font-size: 1em; }
+            #qr-image { width: 200px; height: 200px; }
         }
 
     </style>
@@ -150,14 +269,14 @@
     <div class="container">
         
         <div id="step1-shop" class="step">
-            <div class="header">Cửa Hàng (Giai đoạn 1)</div>
+            <div class="header">Cửa Hàng Vật Phẩm - ChatPlaysGame</div>
             <h2>1. Vui lòng chọn gói nạp</h2>
             <div id="shop-container">
                 </div>
         </div>
 
-        <div id="step2-user-input" class="step" style="display: none;">
-            <div class="header">Xác Nhận (Giai đoạn 2)</div>
+        <div id="step2-user-input" class="step">
+            <div class="header">Xác Nhận Đơn Hàng</div>
             <h2>2. Nhập ID TikTok của bạn</h2>
 
             <div id="summary-box">
@@ -166,97 +285,99 @@
                     <span id="summary-name"></span>
                 </div>
                 <div class="summary-row">
-                    <span>Thanh toán:</span>
+                    <span>Tổng thanh toán:</span>
                     <span id="summary-price"></span>
                 </div>
             </div>
             
-            <label for="tiktok-id">ID TikTok (Không bao gồm @)</label>
-            <input type="text" id="tiktok-id" placeholder="ví dụ: user123">
+            <label for="tiktok-id">ID TikTok của bạn (Chỉ nhập tên, không có @)</label>
+            <input type="text" id="tiktok-id" placeholder="ví dụ: ChatPlaysGameOfficial" maxlength="24">
             
             <p class="warning">
-                ⚠️ VUI LÒNG KIỂM TRA LẠI ID! NẾU BẠN GÕ SAI, VẬT PHẨM SẼ BỊ GỬI NHẦM VÀ CHÚNG TÔI KHÔNG CHỊU TRÁCH NHIEM!
+                ⚠️ CẢNH BÁO: VUI LÒNG KIỂM TRA LẠI ID TIKTOK THẬT KỸ! NẾU BẠN GÕ SAI, VẬT PHẨM SẼ BỊ GỬI NHẦM VÀ CHÚNG TÔI KHÔNG THỂ HỖ TRỢ HOÀN TIỀN/CHUYỂN GÓI.
             </p>
             
-            <button class="button" onclick="generateQR()">Tạo Mã QR</button>
-            <button class="button button-secondary" onclick="goBackToShop()">Chọn lại gói</button>
+            <button class="button" onclick="generateQR()">Tạo Mã QR Thanh Toán</button>
+            <button class="button button-secondary" onclick="goBackToShop()">&#x2190; Quay lại chọn gói</button>
         </div>
 
-        <div id="step3-qr" class="step" style="display: none;">
-            <div class="header">Thanh Toán (Giai đoạn 3)</div>
-            <h2>3. Quét mã VietQR để hoàn tất</h2>
-            <p>Sử dụng App Ngân hàng để quét. Vật phẩm sẽ được gửi sau 1-2 phút.</p>
+        <div id="step3-qr" class="step">
+            <div class="header">Hoàn Tất Thanh Toán</div>
+            <h2>3. Quét mã VietQR để thanh toán</h2>
+            <p>Sử dụng ứng dụng ngân hàng của bạn để quét mã QR bên dưới. Vật phẩm sẽ được gửi vào tài khoản TikTok của bạn sau 1-2 phút.</p>
             
             <img id="qr-image" src="" alt="Đang tạo mã QR...">
             
             <div id="qr-info">
-                Nội dung chuyển khoản (Tự động):<br>
+                Nội dung chuyển khoản (Đã tự động điền):<br>
                 <span id="qr-content"></span>
             </div>
             
-            <button class="button button-secondary" onclick="startOver()">Hoàn tất (Nạp gói khác)</button>
+            <button class="button" onclick="startOver()">Nạp gói khác / Quay lại trang chủ</button>
         </div>
 
     </div>
 
     <script>
-        // ========== 1. CẤU HÌNH SHOP VÀ NGÂN HÀNG ==========
+        // ========== 1. CẤU HÌNH SHOP VÀ NGÂN HÀNG (Dữ liệu của bạn) ==========
         
         // Thông tin ngân hàng của bạn
         const BANK_INFO = {
-            BANK_ID: "970423",     // BIN của TPBank
-            ACCOUNT_NO: "88942689999" // STK của bạn
+            BANK_ID: "970423",     // BIN của TPBank (Kiểm tra lại nếu có thay đổi)
+            ACCOUNT_NO: "88942689999", // STK của bạn
+            ACCOUNT_NAME: "NGUYEN TRAN HIEU NHAN" // Tên chủ tài khoản (hiển thị trên QR) - BẠN PHẢI ĐIỀN CHÍNH XÁC
         };
 
         // Danh sách vật phẩm (Lấy từ PRICE_MAP và get_item_details của bạn)
         const SHOP_ITEMS = [
-            { sku: 'BOX1', name: 'Gói 1 Box', price: 5000 },
-            { sku: 'KEY1', name: 'Gói 1 Key', price: 10000 },
-            { sku: 'GOI1', name: 'Gói 1 Key + 1 Box', price: 13000 },
-            { sku: 'NHANDOI', name: 'Vé X2 Thưởng', price: 30000 },
-            { sku: 'EXP1NGAY', name: 'EXP Boost (1 Ngày)', price: 30000 },
-            { sku: 'BAOHIEM', name: 'Bảo hiểm Vote (VIP)', price: 50000 },
-            { sku: 'KEY2', name: 'Gói 6 Keys', price: 50000 },
-            { sku: 'GOI2', name: 'Gói 4 Keys + 4 Boxes', price: 50000 },
-            { sku: 'EXP3NGAY', name: 'EXP Boost (3 Ngày)', price: 60000 },
-            { sku: 'KEY3', name: 'Gói 13 Keys', price: 100000 },
-            { sku: 'GOI3', name: 'Gói 8 Keys + 8 Boxes', price: 100000 },
-            { sku: 'EXP7NGAY', name: 'EXP Boost (7 Ngày)', price: 120000 },
+            { sku: 'BOX1', name: 'Gói 1 Box', price: 5000, description: 'Mở khóa 1 Hộp May Mắn' },
+            { sku: 'KEY1', name: 'Gói 1 Key', price: 10000, description: 'Mở khóa 1 Chìa Khóa' },
+            { sku: 'GOI1', name: 'Gói 1 Key + 1 Box', price: 13000, description: 'Combo siêu tiết kiệm!' },
+            { sku: 'NHANDOI', name: 'Vé X2 Thưởng', price: 30000, description: 'Nhân đôi phần thưởng khi thắng vote' },
+            { sku: 'EXP1NGAY', name: 'EXP Boost (1 Ngày)', price: 30000, description: 'Tăng tốc độ nhận EXP trong 24h' },
+            { sku: 'BAOHIEM', name: 'Bảo hiểm Vote (VIP)', price: 50000, description: 'Bảo toàn số Token khi thua vote' },
+            { sku: 'KEY2', name: 'Gói 6 Keys', price: 50000, description: 'Gói chìa khóa lớn hơn' },
+            { sku: 'GOI2', name: 'Gói 4 Keys + 4 Boxes', price: 50000, description: 'Combo mạnh mẽ hơn' },
+            { sku: 'EXP3NGAY', name: 'EXP Boost (3 Ngày)', price: 60000, description: 'Tăng tốc độ nhận EXP trong 72h' },
+            { sku: 'KEY3', name: 'Gói 13 Keys', price: 100000, description: 'Số lượng chìa khóa lớn' },
+            { sku: 'GOI3', name: 'Gói 8 Keys + 8 Boxes', price: 100000, description: 'Combo siêu giá trị' },
+            { sku: 'EXP7NGAY', name: 'EXP Boost (7 Ngày)', price: 120000, description: 'Tăng tốc độ nhận EXP trong 1 tuần' },
+            { sku: 'KEY4', name: 'Gói Key Khủng', price: 500000, description: 'Gói chìa khóa lớn nhất (500k)' } 
         ];
 
         // Biến tạm để lưu lựa chọn
         let selectedItem = null;
 
-        // ========== 2. CÁC HÀM XỬ LÝ ==========
+        // ========== 2. CÁC HÀM XỬ LÝ GIAO DIỆN VÀ LOGIC ==========
 
         // Tự động tạo danh sách shop khi tải trang
         window.onload = function() {
             const shopContainer = document.getElementById('shop-container');
             
             SHOP_ITEMS.forEach(item => {
-                // Định dạng giá tiền cho đẹp
                 const formattedPrice = item.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
                 
-                // Tạo 1 thẻ item
                 const itemHTML = `
-                    <div class="shop-item" onclick="selectItem('${item.sku}', ${item.price}, '${item.name}')">
+                    <div class="shop-item" onclick="selectItem('${item.sku}', ${item.price}, '${item.name}', '${item.description}')">
                         <div class="item-name">${item.name}</div>
                         <div class="item-price">${formattedPrice}</div>
                     </div>
                 `;
                 shopContainer.innerHTML += itemHTML;
             });
+
+            // Mặc định ẩn các bước 2 và 3
+            document.getElementById('step2-user-input').style.display = 'none';
+            document.getElementById('step3-qr').style.display = 'none';
         };
 
         // Khi người dùng CHỌN 1 vật phẩm
-        function selectItem(sku, price, name) {
-            selectedItem = { sku, price, name }; // Lưu lại
+        function selectItem(sku, price, name, description) {
+            selectedItem = { sku, price, name, description }; 
             
-            // Cập nhật tóm tắt
             document.getElementById('summary-name').innerText = name;
             document.getElementById('summary-price').innerText = price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
 
-            // Ẩn Giai đoạn 1, Hiển thị Giai đoạn 2
             document.getElementById('step1-shop').style.display = 'none';
             document.getElementById('step2-user-input').style.display = 'block';
             document.getElementById('tiktok-id').focus();
@@ -269,31 +390,33 @@
 
             // 1. Kiểm tra ID
             if (!tiktokId) {
-                alert('Vui lòng nhập ID TikTok!');
+                alert('Vui lòng nhập ID TikTok của bạn!');
+                tiktokIdInput.focus();
+                return;
+            }
+             if (tiktokId.length < 3) {
+                alert('ID TikTok phải có ít nhất 3 ký tự!');
                 tiktokIdInput.focus();
                 return;
             }
 
             // 2. Xử lý ID (Xóa @, xóa cách, chuyển thành chữ HOA)
-            // (Giống logic server Python của bạn để đảm bảo trùng khớp)
             tiktokId = tiktokId.replace('@', '').trim().toUpperCase();
 
             // 3. Tạo nội dung chuyển khoản (Rất quan trọng)
             // Phải khớp với cú pháp server Python mong đợi: SKU<dấu cách>USERNAME
             const addInfo = `${selectedItem.sku} ${tiktokId}`;
             
-            // 4. Tạo URL cho API VietQR
+            // 4. Tạo URL cho API VietQR (Dùng v2/generate để có thêm tên tài khoản)
             const amount = selectedItem.price;
             const vietQR_API_URL = "https://api.vietqr.io/v2/generate";
             
-            // Dùng encodeURIComponent để mã hóa nội dung (ví dụ: "KEY1 USER123" -> "KEY1%20USER123")
-            const fullURL = `${vietQR_API_URL}?acqId=${BANK_INFO.BANK_ID}&accountNo=${BANK_INFO.ACCOUNT_NO}&amount=${amount}&addInfo=${encodeURIComponent(addInfo)}`;
+            const fullURL = `${vietQR_API_URL}?acqId=${BANK_INFO.BANK_ID}&accountNo=${BANK_INFO.ACCOUNT_NO}&amount=${amount}&addInfo=${encodeURIComponent(addInfo)}&bankName=${BANK_INFO.ACCOUNT_NAME}`;
 
             // 5. Hiển thị mã QR
             document.getElementById('qr-image').src = fullURL;
-            document.getElementById('qr-content').innerText = addInfo; // Hiển thị nội dung cho user kiểm tra
+            document.getElementById('qr-content').innerText = addInfo; 
 
-            // Ẩn Giai đoạn 2, Hiển thị Giai đoạn 3
             document.getElementById('step2-user-input').style.display = 'none';
             document.getElementById('step3-qr').style.display = 'block';
         }
@@ -302,7 +425,7 @@
         function goBackToShop() {
             document.getElementById('step1-shop').style.display = 'block';
             document.getElementById('step2-user-input').style.display = 'none';
-            selectedItem = null; // Xóa lựa chọn
+            selectedItem = null; 
         }
 
         // Bắt đầu lại từ đầu
