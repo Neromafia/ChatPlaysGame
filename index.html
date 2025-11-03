@@ -551,7 +551,11 @@
             
             <img id="qr-image" src="" alt="Đang tạo mã QR..." referrerpolicy="no-referrer">
             
-            <button class="button" onclick="openQRImage()" style="margin-top: 30px;">MỞ / TẢI ẢNH QR</button>
+            <p class="warning" style="margin-top: 25px;">
+                ⚠️ <strong>LƯU Ý:</strong> Chỉ quét mã QR được tạo tự động. <strong>Tuyệt đối không chuyển khoản thủ công.</strong> Mọi giao dịch chuyển khoản thủ công bị sai sót (sai cú pháp, sai số tiền) sẽ không được hỗ trợ.
+            </p>
+            
+            <button class="button" onclick="openQRImage()" style="margin-top: 20px;">MỞ / TẢI ẢNH QR</button>
             <button class="button button-secondary" onclick="goBackToShop()">Nạp gói khác / Quay lại Shop</button>
         </div>
 
@@ -601,7 +605,7 @@
                     { sku: 'KEY1', name: 'Gói 1 Key', price: 10000, keys: 1, boxes: 0, isHot: false },
                     { sku: 'KEY2', name: 'Gói 6 Keys', price: 50000, keys: 6, boxes: 0, isHot: false },
                     { sku: 'KEY3', name: 'Gói 13 Keys', price: 100000, keys: 13, boxes: 0, isHot: false },
-                    { sku: 'KEY200K', name: 'Gói 25 Keys', price: 200000, keys: 25, boxes: 0, isHot: true }
+                    { sku: 'KEY4', name: 'Gói 25 Keys', price: 200000, keys: 25, boxes: 0, isHot: true }
                 ]
             },
             {
@@ -673,7 +677,7 @@
                         labelHTML += `<div class="item-label">HOT</div>`;
                     }
                     
-                    if (group.groupName !== "Vật Phẩm Hỗ Trợ" && item.sku !== 'GOI1') {
+                    if (group.groupName !== "Vật Phẩm Hỗ Trợ" && item.sku !== 'GOI1' && item.sku !== 'KEY1' && item.sku !== 'BOX1') {
                         const regularPrice = (item.keys || 0) * BASE_KEY_PRICE + (item.boxes || 0) * BASE_BOX_PRICE;
                         if (regularPrice > item.price) {
                             const saveAmount = regularPrice - item.price;
