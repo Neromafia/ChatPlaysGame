@@ -15,20 +15,41 @@
             100% { transform: translate(0, 0); }
         }
         
-        @keyframes lightning-strike {
-            0%   { color: #ffffff; text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff; }
-            40%  { color: #ffffff; text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff; }
-            41%  { color: #00e5ff; text-shadow: 0 0 30px #ffffff, 0 0 15px #ffffff; }
-            42%  { color: #ffffff; text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff; }
-            43%  { color: #00e5ff; text-shadow: 0 0 30px #ffffff, 0 0 15px #ffffff; }
-            44%  { color: #ffffff; text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff; }
-            
-            70%  { color: #ffffff; text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff; }
-            71%  { color: #00e5ff; text-shadow: 0 0 30px #ffffff, 0 0 15px #ffffff; }
-            72%  { color: #ffffff; text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff; }
-            
-            100% { color: #ffffff; text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff; }
+        @keyframes wow-lightning {
+            0% {
+                color: #ffffff;
+                text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff;
+            }
+            85% {
+                color: #ffffff;
+                text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff;
+            }
+            86% {
+                color: #0d0d1e;
+                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 40px #00e5ff, 0 0 80px #00e5ff, 0 0 120px #00e5ff;
+            }
+            87% {
+                color: #ffffff;
+                text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff;
+            }
+            88% {
+                color: #0d0d1e;
+                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 40px #00e5ff, 0 0 80px #00e5ff;
+            }
+            89% {
+                color: #ffffff;
+                text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff;
+            }
+            90% {
+                color: #0d0d1e;
+                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 40px #00e5ff;
+            }
+            100% {
+                color: #ffffff;
+                text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff;
+            }
         }
+
 
         body {
             font-family: 'Montserrat', sans-serif;
@@ -98,7 +119,7 @@
             font-family: 'Oxanium', sans-serif;
             letter-spacing: 0.05em;
             text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff;
-            animation: lightning-strike 2s linear infinite;
+            animation: wow-lightning 3s linear infinite;
         }
         .step {
             padding: 30px;
@@ -564,4 +585,3 @@
     </script>
 </body>
 </html>
-
