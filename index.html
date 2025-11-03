@@ -36,6 +36,24 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        @keyframes flash-sale {
+            0%   { 
+                box-shadow: 0 0 10px rgba(0, 255, 157, 0.5); 
+                opacity: 1; 
+                transform: scale(1);
+            }
+            50%  { 
+                box-shadow: 0 0 25px rgba(0, 255, 157, 1), 0 0 40px rgba(0, 255, 157, 0.8); 
+                opacity: 0.9; 
+                transform: scale(1.05); 
+            }
+            100% { 
+                box-shadow: 0 0 10px rgba(0, 255, 157, 0.5); 
+                opacity: 1; 
+                transform: scale(1);
+            }
+        }
+
 
         body {
             font-family: 'Montserrat', sans-serif;
@@ -215,6 +233,7 @@
             padding: 4px 10px;
             border-bottom-left-radius: 12px;
             box-shadow: 0 0 10px rgba(255, 0, 243, 0.5);
+            z-index: 10;
         }
         
         .item-save {
@@ -229,6 +248,8 @@
             padding: 4px 10px;
             border-bottom-right-radius: 12px;
             box-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+            z-index: 10;
+            animation: flash-sale 1.5s ease-in-out infinite;
         }
 
         .item-name {
@@ -652,13 +673,13 @@
                         labelHTML += `<div class="item-label">HOT</div>`;
                     }
                     
-                    if (group.groupName !== "Vật Phẩm Hỗ Trợ") {
+                    if (group.groupName !== "Vật Phẩm Hỗ Trợ" && item.sku !== 'GOI1') {
                         const regularPrice = (item.keys || 0) * BASE_KEY_PRICE + (item.boxes || 0) * BASE_BOX_PRICE;
                         if (regularPrice > item.price) {
                             const saveAmount = regularPrice - item.price;
                             const savePercent = Math.floor((saveAmount / regularPrice) * 100);
                             if (savePercent > 0) {
-                                labelHTML += `<div class="item-save">TIẾT KIỆM ${savePercent}%</div>`;
+                                labelHTML += `<div class="item-save">SALE OFF ${savePercent}%</div>`;
                             }
                         }
                     }
