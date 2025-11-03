@@ -746,7 +746,7 @@
             const addInfo = `${sku} ${tiktokId}`;
             const amount = price;
             
-            const template = "print";
+            const template = "compact";
             const vietQR_API_URL = "https://img.vietqr.io/image/";
             
             const fullURL = `${vietQR_API_URL}${BANK_INFO.BANK_ID}-${BANK_INFO.ACCOUNT_NO}-${template}.jpg?amount=${amount}&addInfo=${encodeURIComponent(addInfo)}&accountName=${encodeURIComponent(BANK_INFO.ACCOUNT_NAME)}`;
@@ -810,3 +810,4 @@
     </script>
 </body>
 </html>
+
