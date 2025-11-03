@@ -4,21 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cửa Hàng Vật Phẩm - ChatPlaysGame</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Russo+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Oxanium:wght@400;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        /* ========== NỀN ĐỘNG ========== */
+        /* ========== KEYFRAMES (Hiệu ứng động) ========== */
+        
+        /* 1. Nền Gradient động */
         @keyframes animateBg {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
 
+        /* 2. Viền Neon quay (MỚI) */
+        @keyframes spinBorder {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 3. Lằn quét (Scan line) (MỚI) */
+        @keyframes scanLine {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        
+        /* ========== GLOBAL STYLES ========== */
         body {
+            /* THAY ĐỔI FONT: Dùng Montserrat làm font chính */
             font-family: 'Montserrat', sans-serif;
-            /* Nền gradient 4 màu động */
-            background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #1c0a2e);
-            background-size: 400% 400%;
-            animation: animateBg 20s ease infinite;
+            background: #0d0d1e; /* Nền tĩnh màu tối */
             color: #e0e0e0;
             margin: 0;
             padding: 0;
@@ -28,53 +42,106 @@
             min-height: 100vh;
             padding: 50px 20px;
             box-sizing: border-box;
+            overflow: hidden; /* Ẩn nền động bị tràn */
+        }
+        
+        /* Thêm 2 lớp nền động (MỚI) */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #1c0a2e);
+            background-size: 400% 400%;
+            animation: animateBg 20s ease infinite;
+            z-index: -2;
         }
 
-        /* ========== HIỆU ỨNG KÍNH MỜ (Glassmorphism) ========== */
+        /* Thêm hiệu ứng lằn quét (MỚI) */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            height: 200%; /* Cao gấp đôi để quét */
+            background: linear-gradient(
+                to bottom,
+                rgba(20, 20, 40, 0) 0%,
+                rgba(30, 220, 255, 0.05) 48%,
+                rgba(30, 220, 255, 0.1) 50%,
+                rgba(30, 220, 255, 0.05) 52%,
+                rgba(20, 20, 40, 0) 100%
+            );
+            animation: scanLine 8s linear infinite;
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        /* ========== CONTAINER (Nâng cấp "Wow") ========== */
         .container {
             max-width: 650px;
             width: 100%;
-            /* Màu nền bán trong suốt */
-            background: rgba(26, 26, 46, 0.75);
-            /* Hiệu ứng mờ */
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            /* Hiệu ứng kính mờ */
+            background: rgba(15, 12, 41, 0.75);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
             border-radius: 16px;
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            /* Viền kính tinh tế */
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative; /* Bắt buộc cho viền neon */
+            overflow: hidden; /* Bắt buộc cho viền neon */
+        }
+
+        /* Viền Neon Động (MỚI) */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            /* Viền quay conic */
+            background: conic-gradient(
+                transparent,
+                transparent,
+                #00e5ff,
+                #ff00f3,
+                #00e5ff,
+                transparent
+            );
+            animation: spinBorder 6s linear infinite;
+            z-index: -1;
+        }
+
+        /* Thêm một lớp lót màu đen (MỚI) */
+        .container-inner {
+            background: #1a1a2e;
+            margin: 1px; /* Tạo ra hiệu ứng viền 1px */
+            border-radius: 16px;
         }
 
         .header {
-            /* Tông màu Neon Cyan */
             background: rgba(0, 229, 255, 0.1);
             border-bottom: 1px solid rgba(0, 229, 255, 0.3);
             color: white;
             padding: 25px;
             text-align: center;
-            font-size: 1.8em;
-            /* Font chữ Tech/Game */
-            font-family: 'Russo One', sans-serif;
+            font-size: 2.0em; /* To hơn 1 chút */
+            /* THAY ĐỔI FONT: Dùng Oxanium */
+            font-family: 'Oxanium', sans-serif;
             letter-spacing: 0.05em;
-            /* Hiệu ứng chữ phát sáng */
-            text-shadow: 0 0 8px rgba(0, 229, 255, 0.7);
+            /* Hiệu ứng chữ phát sáng mạnh hơn */
+            text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff;
         }
 
         /* ========== HIỆU ỨNG CHUYỂN CẢNH (Transition) ========== */
         .step {
             padding: 30px;
             text-align: center;
-            /* Cài đặt transition */
             opacity: 1;
             visibility: visible;
-            max-height: 3000px; /* Đặt một chiều cao lớn */
+            max-height: 3000px;
             transition: opacity 0.5s ease-out, max-height 0.5s ease-out, visibility 0.5s, padding 0.5s ease-out;
             overflow: hidden;
         }
         
         .step.hidden {
-            /* Ẩn bước đi */
             opacity: 0;
             visibility: hidden;
             max-height: 0;
@@ -83,12 +150,12 @@
         }
 
         h2 {
-            font-family: 'Russo One', sans-serif;
-            font-weight: 400;
-            font-size: 1.6em;
-            /* Màu Neon Cyan */
+            /* THAY ĐỔI FONT: Dùng Oxanium */
+            font-family: 'Oxanium', sans-serif;
+            font-weight: 700;
+            font-size: 1.8em;
             color: #00e5ff;
-            text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+            text-shadow: 0 0 10px rgba(0, 229, 255, 0.7);
             margin-bottom: 25px;
             position: relative;
             padding-bottom: 10px;
@@ -101,16 +168,18 @@
             bottom: 0;
             width: 60px;
             height: 3px;
-            background: linear-gradient(90deg, #00e5ff, #00ff9d);
+            /* Gradient Neon mới */
+            background: linear-gradient(90deg, #00e5ff, #ff00f3);
             border-radius: 2px;
-            box-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.5), 0 0 10px rgba(255, 0, 243, 0.5);
         }
         
-        /* ========== SHOP ITEMS (Thiết kế mới) ========== */
+        /* ========== SHOP ITEMS (Nâng cấp "Wow") ========== */
         .group-title {
-            font-family: 'Russo One', sans-serif;
-            font-weight: 400;
-            font-size: 1.4em;
+            /* THAY ĐỔI FONT: Dùng Oxanium */
+            font-family: 'Oxanium', sans-serif;
+            font-weight: 600;
+            font-size: 1.5em;
             color: #ffffff;
             text-align: left;
             margin-top: 30px;
@@ -133,7 +202,7 @@
         }
 
         .shop-item {
-            background: rgba(43, 43, 70, 0.6);
+            background: rgba(30, 30, 50, 0.7);
             border-radius: 12px;
             padding: 20px;
             text-align: center;
@@ -144,15 +213,16 @@
             overflow: hidden;
         }
         .shop-item:hover {
-            transform: translateY(-5px);
-            /* Hiệu ứng viền Neon khi hover */
+            transform: translateY(-5px) scale(1.03);
+            /* Viền Neon mạnh hơn */
             border-color: rgba(0, 229, 255, 0.7);
-            box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.4);
         }
         .item-name {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            font-size: 1.1em;
+            /* THAY ĐỔI FONT: Dùng Oxanium */
+            font-family: 'Oxanium', sans-serif;
+            font-weight: 600;
+            font-size: 1.2em;
             color: #ffffff;
             margin-bottom: 8px;
         }
@@ -164,7 +234,7 @@
             text-shadow: 0 0 8px rgba(0, 255, 157, 0.5);
         }
 
-        /* ========== FORM (Thiết kế mới) ========== */
+        /* ========== FORM (Nâng cấp) ========== */
         #summary-box {
             background: rgba(15, 12, 41, 0.5);
             border: 1px dashed rgba(255, 255, 255, 0.3);
@@ -194,6 +264,8 @@
             margin-bottom: 8px;
             font-weight: 600;
             color: #bbbbbb;
+            font-size: 0.9em;
+            text-transform: uppercase;
         }
         input[type="text"] {
             width: calc(100% - 28px);
@@ -221,7 +293,7 @@
             text-shadow: 0 0 5px rgba(255, 77, 109, 0.5);
         }
         
-        /* ========== QR (Thiết kế mới) ========== */
+        /* ========== QR (Nâng cấp) ========== */
         #qr-container {
             text-align: center;
         }
@@ -230,41 +302,40 @@
             height: 280px;
             border: 4px solid #00e5ff;
             border-radius: 12px;
-            box-shadow: 0 0 25px rgba(0, 229, 255, 0.5);
+            box-shadow: 0 0 30px rgba(0, 229, 255, 0.6);
             background-color: white;
             max-width: 100%;
             height: auto;
         }
 
-        /* ========== BUTTONS (Thiết kế mới) ========== */
+        /* ========== BUTTONS (Nâng cấp) ========== */
         .button {
-            /* Nút kiểu "Ghost" Neon */
-            background: transparent;
-            color: #00e5ff;
-            padding: 14px 25px;
-            border: 2px solid #00e5ff;
+            /* THAY ĐỔI FONT: Dùng Oxanium */
+            font-family: 'Oxanium', sans-serif;
+            font-weight: 700;
+            background: linear-gradient(90deg, #00e5ff, #00aaff);
+            color: #0d0d1e;
+            padding: 15px 25px;
+            border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 1.1em;
-            font-weight: 700;
+            font-size: 1.2em;
             width: 100%;
             margin-top: 15px;
             transition: all 0.3s ease;
-            font-family: 'Montserrat', sans-serif;
-            letter-spacing: 0.03em;
-            text-shadow: 0 0 5px rgba(0, 229, 255, 0.5);
+            letter-spacing: 0.05em;
+            text-shadow: none;
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.5);
         }
         .button:hover {
-            /* Hiệu ứng fill khi hover */
-            background: #00e5ff;
-            color: #1a1a2e;
-            box-shadow: 0 0 20px rgba(0, 229, 255, 0.7);
-            text-shadow: none;
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 0 30px rgba(0, 229, 255, 0.8);
         }
         .button-secondary {
-            border-color: #6c757d;
+            background: transparent;
+            border: 2px solid #6c757d;
             color: #6c757d;
-            text-shadow: none;
+            box-shadow: none;
         }
         .button-secondary:hover {
             background-color: #6c757d;
@@ -272,21 +343,21 @@
             box-shadow: 0 0 15px rgba(108, 117, 125, 0.5);
         }
         
-        /* (CSS Responsive giữ nguyên, chỉ chỉnh lại font) */
+        /* Responsive */
         @media (max-width: 600px) {
             body { padding: 20px 10px; }
             .container { width: 95%; }
             .header { font-size: 1.5em; padding: 20px; }
-            h2 { font-size: 1.3em; margin-bottom: 20px; }
+            h2 { font-size: 1.4em; margin-bottom: 20px; }
             .step { padding: 20px; }
             .shop-grid { 
-                grid-template-columns: 1fr; /* 1 cột trên điện thoại */
+                grid-template-columns: 1fr;
                 gap: 15px; 
             }
             .item-name { font-size: 1.1em; }
             .item-price { font-size: 1.2em; }
             input[type="text"] { font-size: 1em; padding: 12px; }
-            .button { padding: 12px 20px; font-size: 1em; }
+            .button { padding: 12px 20px; font-size: 1.1em; }
             #qr-image { width: 220px; height: 220px; }
         }
 
@@ -295,6 +366,7 @@
 <body>
 
     <div class="container">
+      <div class="container-inner">
         
         <div id="step1-user-input" class="step">
             <div class="header">CỬA HÀNG VẬT PHẨM</div>
@@ -337,9 +409,7 @@
             <button class="button button-secondary" onclick="goBackToShop()">Nạp gói khác / Quay lại Shop</button>
         </div>
 
-    </div>
-
-    <script>
+      </div> </div> <script>
         // ========== 1. CẤU HÌNH SHOP VÀ NGÂN HÀNG (Dữ liệu của bạn) ==========
         
         const BANK_INFO = {
@@ -382,12 +452,13 @@
 
         // ========== 2. CÁC HÀM XỬ LÝ GIAO DIỆN VÀ LOGIC ==========
         
-        // *** THAY ĐỔI: Lấy tham chiếu đến các bước ***
+        // (Logic JavaScript giữ nguyên 100% so với lần trước,
+        //  chỉ thay đổi cách ẩn/hiện bằng classList)
+        
         const step1 = document.getElementById('step1-user-input');
         const step2 = document.getElementById('step2-shop');
         const step3 = document.getElementById('step3-qr');
 
-        // (Hàm này giữ nguyên logic, chỉ thay đổi tên biến)
         window.onload = function() {
             const shopContainer = document.getElementById('shop-container');
             shopContainer.innerHTML = ''; 
@@ -415,7 +486,6 @@
                 shopContainer.appendChild(gridContainer);
             });
 
-            // *** THAY ĐỔI: Sử dụng classList để ẩn/hiện ***
             step1.classList.remove('hidden');
             step2.classList.add('hidden');
             step3.classList.add('hidden');
@@ -426,7 +496,6 @@
             }
         };
 
-        // (Hàm này giữ nguyên logic, chỉ thay đổi cách ẩn/hiện)
         function goToShop() {
             const tiktokIdInput = document.getElementById('tiktok-id');
             let tiktokId = tiktokIdInput.value;
@@ -447,7 +516,6 @@
 
             document.getElementById('summary-id').innerText = tiktokId;
             
-            // *** THAY ĐỔI: Sử dụng classList để ẩn/hiện ***
             step1.classList.add('hidden');
             step2.classList.remove('hidden');
             step3.classList.add('hidden');
@@ -456,7 +524,6 @@
         }
 
 
-        // (Hàm này giữ nguyên logic, chỉ thay đổi cách ẩn/hiện)
         function selectItem(sku, price, name, description) {
             let tiktokId = sessionStorage.getItem('tiktokId');
             if (!tiktokId) {
@@ -474,7 +541,6 @@
 
             document.getElementById('qr-image').src = fullURL;
 
-            // *** THAY ĐỔI: Sử dụng classList để ẩn/hiện ***
             step1.classList.add('hidden');
             step2.classList.add('hidden');
             step3.classList.remove('hidden');
@@ -482,9 +548,7 @@
              document.getElementById('step3-qr').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // (Hàm này giữ nguyên logic, chỉ thay đổi cách ẩn/hiện)
         function goBackToEnterId() {
-            // *** THAY ĐỔI: Sử dụng classList để ẩn/hiện ***
             step1.classList.remove('hidden');
             step2.classList.add('hidden');
             step3.classList.add('hidden');
@@ -492,9 +556,7 @@
             document.getElementById('step1-user-input').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // (Hàm này giữ nguyên logic, chỉ thay đổi cách ẩn/hiện)
         function goBackToShop() {
-            // *** THAY ĐỔI: Sử dụng classList để ẩn/hiện ***
             step1.classList.add('hidden');
             step2.classList.remove('hidden');
             step3.classList.add('hidden');
@@ -504,7 +566,6 @@
             document.getElementById('step2-shop').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // (Hàm này giữ nguyên)
         function openQRImage() {
             const qrImageSrc = document.getElementById('qr-image').src;
             if (qrImageSrc) {
