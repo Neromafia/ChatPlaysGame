@@ -172,6 +172,7 @@
             background: rgba(30, 30, 50, 0.7);
             border-radius: 12px;
             padding: 20px;
+            padding-top: 30px;
             text-align: center;
             cursor: pointer;
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -201,6 +202,35 @@
         .shop-item:hover::before {
             opacity: 1;
         }
+        
+        .item-label {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: linear-gradient(90deg, #ff00f3, #ff4d6d);
+            color: white;
+            font-family: 'Oxanium', sans-serif;
+            font-size: 0.9em;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-bottom-left-radius: 12px;
+            box-shadow: 0 0 10px rgba(255, 0, 243, 0.5);
+        }
+        
+        .item-save {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: #00ff9d;
+            color: #0d0d1e;
+            font-family: 'Oxanium', sans-serif;
+            font-size: 0.9em;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-bottom-right-radius: 12px;
+            box-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+        }
+
         .item-name {
             font-family: 'Oxanium', sans-serif;
             font-weight: 600;
@@ -208,6 +238,7 @@
             color: #ffffff;
             margin-bottom: 8px;
             transform: translateZ(20px);
+            margin-top: 10px;
         }
         .item-price {
             color: #00ff9d;
@@ -530,42 +561,45 @@
             ACCOUNT_NAME: "NGUYEN TRAN HIEU NHAN"
         };
         
+        const BASE_KEY_PRICE = 10000;
+        const BASE_BOX_PRICE = 5000;
+
         const SHOP_GROUPS = [
             {
-                groupName: "Combo Gacha",
+                groupName: "Combo Gacha Premium",
                 items: [
-                    { sku: 'GOI1', name: 'Gói 1 (1 Key + 1 Box)', price: 13000, description: 'Combo 13k' },
-                    { sku: 'GOI2', name: 'Gói 2 (4 Keys + 4 Boxes)', price: 50000, description: 'Combo 50k' },
-                    { sku: 'GOI3', name: 'Gói 3 (8 Keys + 8 Boxes)', price: 100000, description: 'Combo 100k' },
-                    { sku: 'GOI4', name: 'Gói 4 (15 Keys + 15 Boxes)', price: 180000, description: 'Combo 180k' }
+                    { sku: 'GOI1', name: 'Gói 1 (1 Key + 1 Box)', price: 13000, keys: 1, boxes: 1, isHot: false },
+                    { sku: 'GOI2', name: 'Gói 2 (4 Keys + 4 Boxes)', price: 50000, keys: 4, boxes: 4, isHot: false },
+                    { sku: 'GOI3', name: 'Gói 3 (8 Keys + 8 Boxes)', price: 100000, keys: 8, boxes: 8, isHot: false },
+                    { sku: 'GOI4', name: 'Gói 4 (15 Keys + 15 Boxes)', price: 180000, keys: 15, boxes: 15, isHot: true }
                 ]
             },
             {
-                groupName: "Gói Key Lẻ",
+                groupName: "Gói Premium Key",
                 items: [
-                    { sku: 'KEY1', name: 'Gói 1 Key', price: 10000, description: 'Gói 10k' },
-                    { sku: 'KEY2', name: 'Gói 6 Keys', price: 50000, description: 'Gói 50k' },
-                    { sku: 'KEY3', name: 'Gói 13 Keys', price: 100000, description: 'Gói 100k' },
-                    { sku: 'KEY4', name: 'Gói 25 Keys', price: 200000, description: 'Gói 200k' }
+                    { sku: 'KEY1', name: 'Gói 1 Key', price: 10000, keys: 1, boxes: 0, isHot: false },
+                    { sku: 'KEY2', name: 'Gói 6 Keys', price: 50000, keys: 6, boxes: 0, isHot: false },
+                    { sku: 'KEY3', name: 'Gói 13 Keys', price: 100000, keys: 13, boxes: 0, isHot: false },
+                    { sku: 'KEY200K', name: 'Gói 25 Keys', price: 200000, keys: 25, boxes: 0, isHot: true }
                 ]
             },
             {
-                groupName: "Gói Box Lẻ",
+                groupName: "Gói Premium Box",
                 items: [
-                    { sku: 'BOX1', name: 'Gói 1 Box', price: 5000, description: 'Gói 5k' },
-                    { sku: 'BOX2', name: 'Gói 6 Boxes', price: 25000, description: 'Gói 25k' },
-                    { sku: 'BOX3', name: 'Gói 13 Boxes', price: 50000, description: 'Gói 50k' },
-                    { sku: 'BOX4', name: 'Gói 25 Boxes', price: 110000, description: 'Gói 110k' }
+                    { sku: 'BOX1', name: 'Gói 1 Box', price: 5000, keys: 0, boxes: 1, isHot: false },
+                    { sku: 'BOX2', name: 'Gói 6 Boxes', price: 25000, keys: 0, boxes: 6, isHot: false },
+                    { sku: 'BOX3', name: 'Gói 13 Boxes', price: 50000, keys: 0, boxes: 13, isHot: false },
+                    { sku: 'BOX4', name: 'Gói 25 Boxes', price: 110000, keys: 0, boxes: 25, isHot: true }
                 ]
             },
             {
                 groupName: "Vật Phẩm Hỗ Trợ",
                 items: [
-                    { sku: 'NHANDOI', name: 'Vé X2 Thưởng', price: 30000, description: 'Nhân đôi phần thưởng khi thắng vote' },
-                    { sku: 'BAOHIEM', name: 'Bảo hiểm Vote (VIP)', price: 50000, description: 'Bảo toàn số Token khi thua vote' },
-                    { sku: 'EXP1NGAY', name: 'EXP Boost (1 Ngày)', price: 30000, description: 'Tăng tốc độ nhận EXP trong 24h' },
-                    { sku: 'EXP3NGAY', name: 'EXP Boost (3 Ngày)', price: 60000, description: 'Tăng tốc độ nhận EXP trong 72h' },
-                    { sku: 'EXP7NGAY', name: 'EXP Boost (7 Ngày)', price: 120000, description: 'Tăng tốc độ nhận EXP trong 1 tuần' }
+                    { sku: 'NHANDOI', name: 'Vé X2 Thưởng', price: 30000, isHot: false },
+                    { sku: 'BAOHIEM', name: 'Bảo hiểm Vote (VIP)', price: 50000, isHot: false },
+                    { sku: 'EXP1NGAY', name: 'EXP Boost (1 Ngày)', price: 30000, isHot: false },
+                    { sku: 'EXP3NGAY', name: 'EXP Boost (3 Ngày)', price: 60000, isHot: false },
+                    { sku: 'EXP7NGAY', name: 'EXP Boost (7 Ngày)', price: 120000, isHot: true }
                 ]
             }
         ];
@@ -599,29 +633,55 @@
         window.onload = function() {
             const shopContainer = document.getElementById('shop-container');
             shopContainer.innerHTML = ''; 
+            
             SHOP_GROUPS.forEach(group => {
                 const groupTitle = document.createElement('h3');
                 groupTitle.className = 'group-title';
                 groupTitle.innerText = group.groupName;
                 shopContainer.appendChild(groupTitle);
+                
                 const gridContainer = document.createElement('div');
                 gridContainer.className = 'shop-grid';
+
                 group.items.forEach(item => {
                     const formattedPrice = item.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                    
+                    let labelHTML = '';
+                    
+                    if (item.isHot) {
+                        labelHTML += `<div class="item-label">HOT</div>`;
+                    }
+                    
+                    if (group.groupName !== "Vật Phẩm Hỗ Trợ") {
+                        const regularPrice = (item.keys || 0) * BASE_KEY_PRICE + (item.boxes || 0) * BASE_BOX_PRICE;
+                        if (regularPrice > item.price) {
+                            const saveAmount = regularPrice - item.price;
+                            const savePercent = Math.floor((saveAmount / regularPrice) * 100);
+                            if (savePercent > 0) {
+                                labelHTML += `<div class="item-save">TIẾT KIỆM ${savePercent}%</div>`;
+                            }
+                        }
+                    }
+                    
                     const itemHTML = `
-                        <div class="shop-item" onclick="selectItem('${item.sku}', ${item.price}, '${item.name}', '${item.description}')">
+                        <div class="shop-item" onclick="selectItem('${item.sku}', ${item.price}, '${item.name}')">
+                            ${labelHTML}
                             <div class="item-name">${item.name}</div>
                             <div class="item-price">${formattedPrice}</div>
                         </div>
                     `;
                     gridContainer.innerHTML += itemHTML;
                 });
+                
                 shopContainer.appendChild(gridContainer);
             });
+            
             initialize3DEffects(); 
+            
             step1.classList.remove('hidden');
             step2.classList.add('hidden');
             step3.classList.add('hidden');
+            
             const savedId = sessionStorage.getItem('tiktokId');
             if (savedId) {
                 document.getElementById('tiktok-id').value = savedId;
@@ -650,8 +710,7 @@
             document.getElementById('step2-shop').scrollIntoView({ behavior: 'smooth' });
         }
 
-
-        function selectItem(sku, price, name, description) {
+        function selectItem(sku, price, name) {
             let tiktokId = sessionStorage.getItem('tiktokId');
             if (!tiktokId) {
                 alert('Lỗi: Không tìm thấy ID TikTok. Vui lòng quay lại Bước 1.');
