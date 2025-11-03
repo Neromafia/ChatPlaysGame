@@ -7,17 +7,30 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Oxanium:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* (Toàn bộ CSS Nền, Container, Font... giữ nguyên) */
-        @keyframes animateBg {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        @keyframes plasma-flow {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(10%, -10%); }
+            50% { transform: translate(-10%, 10%); }
+            75% { transform: translate(10%, 10%); }
+            100% { transform: translate(0, 0); }
         }
+        
         @keyframes glitch {
             2%, 64% { transform: translate(2px, 0) skew(0deg); }
             4%, 60% { transform: translate(-2px, 0) skew(0deg); }
             62% { transform: translate(0, 0) skew(5deg); }
         }
+
+        @keyframes lightning-strike {
+            0%   { color: #00e5ff; text-shadow: 0 0 10px rgba(0, 229, 255, 0.7); }
+            70%  { color: #00e5ff; text-shadow: 0 0 10px rgba(0, 229, 255, 0.7); }
+            71%  { color: #ffffff; text-shadow: 0 0 30px #ffffff, 0 0 15px #ffffff, 0 0 5px #ffffff; }
+            72%  { color: #00e5ff; text-shadow: 0 0 10px rgba(0, 229, 255, 0.7); }
+            73%  { color: #ffffff; text-shadow: 0 0 30px #ffffff, 0 0 15px #ffffff, 0 0 5px #ffffff; }
+            74%  { color: #00e5ff; text-shadow: 0 0 10px rgba(0, 229, 255, 0.7); }
+            100% { color: #00e5ff; text-shadow: 0 0 10px rgba(0, 229, 255, 0.7); }
+        }
+
         body {
             font-family: 'Montserrat', sans-serif;
             background-color: #000000;
@@ -116,6 +129,13 @@
             margin-bottom: 25px;
             position: relative;
             padding-bottom: 10px;
+            animation: lightning-strike 5s linear infinite;
+        }
+        #step2-shop h2 {
+            animation-delay: 1s;
+        }
+        #step3-qr h2 {
+            animation-delay: 2s;
         }
         h2::after {
             content: '';
@@ -336,7 +356,7 @@
       <div class="container-inner">
         
         <div id="step1-user-input" class="step">
-            <div class="header">CỬA HÀNG VẬT PHẨM</div>
+            <div class="header">CHAT PLAYS GAME</div>
             <h2>1. NHẬP ID TIKTOK CỦA BẠN</h2>
             
             <label for="tiktok-id">ID TikTok (Chỉ nhập tên, không có @)</label>
@@ -361,7 +381,7 @@
             </div>
 
             <div id="shop-container">
-                </div>
+            </div>
 
             <button class="button button-secondary" onclick="goBackToEnterId()">&#x2190; Quay lại (Đổi ID)</button>
         </div>
@@ -380,8 +400,10 @@
             <button class="button button-secondary" onclick="goBackToShop()">Nạp gói khác / Quay lại Shop</button>
         </div>
 
-      </div> </div> <script>
-        // (Cấu hình BANK_INFO và SHOP_GROUPS giữ nguyên)
+      </div> 
+    </div> 
+
+    <script>
         const BANK_INFO = {
             BANK_ID: "tpbank",
             ACCOUNT_NO: "88942689999",
@@ -422,7 +444,6 @@
         const step2 = document.getElementById('step2-shop');
         const step3 = document.getElementById('step3-qr');
 
-        // (Hàm 3D Tilt giữ nguyên)
         function initialize3DEffects() {
             const items = document.querySelectorAll('.shop-item');
             items.forEach(item => {
@@ -444,7 +465,6 @@
             });
         }
 
-        // (Hàm window.onload giữ nguyên)
         window.onload = function() {
             const shopContainer = document.getElementById('shop-container');
             shopContainer.innerHTML = ''; 
@@ -477,7 +497,6 @@
             }
         };
 
-        // (Hàm goToShop giữ nguyên)
         function goToShop() {
             const tiktokIdInput = document.getElementById('tiktok-id');
             let tiktokId = tiktokIdInput.value;
@@ -500,8 +519,7 @@
             document.getElementById('step2-shop').scrollIntoView({ behavior: 'smooth' });
         }
 
-        
-        // *** HÀM selectItem (ĐÃ CẬP NHẬT) ***
+
         function selectItem(sku, price, name, description) {
             let tiktokId = sessionStorage.getItem('tiktokId');
             if (!tiktokId) {
@@ -515,13 +533,11 @@
             
             const template = "print";
             const vietQR_API_URL = "https://img.vietqr.io/image/";
+            
             const fullURL = `${vietQR_API_URL}${BANK_INFO.BANK_ID}-${BANK_INFO.ACCOUNT_NO}-${template}.jpg?amount=${amount}&addInfo=${encodeURIComponent(addInfo)}&accountName=${encodeURIComponent(BANK_INFO.ACCOUNT_NAME)}`;
 
-            // *** DÒNG MỚI ĐƯỢC THÊM VÀO ***
-            // Cập nhật text tóm tắt ở Bước 3
             const summaryText = document.getElementById('purchase-summary');
             summaryText.innerHTML = `<strong style="color: #00ff9d;">${tiktokId}</strong> đang thanh toán gói <strong style="color: #00e5ff;">${name}</strong>`;
-            // *** (Hết phần thêm) ***
 
             document.getElementById('qr-image').src = fullURL;
 
@@ -532,7 +548,6 @@
              document.getElementById('step3-qr').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // (Các hàm còn lại giữ nguyên)
         function goBackToEnterId() {
             step1.classList.remove('hidden');
             step2.classList.add('hidden');
