@@ -16,38 +16,24 @@
         }
         
         @keyframes wow-lightning {
-            0% {
-                color: #ffffff;
-                text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff;
-            }
-            85% {
-                color: #ffffff;
-                text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff;
-            }
-            86% {
-                color: #0d0d1e;
-                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 40px #00e5ff, 0 0 80px #00e5ff, 0 0 120px #00e5ff;
-            }
-            87% {
-                color: #ffffff;
-                text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff;
-            }
-            88% {
-                color: #0d0d1e;
-                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 40px #00e5ff, 0 0 80px #00e5ff;
-            }
-            89% {
-                color: #ffffff;
-                text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff;
-            }
-            90% {
-                color: #0d0d1e;
-                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 40px #00e5ff;
-            }
-            100% {
-                color: #ffffff;
-                text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff;
-            }
+            0%   { color: #ffffff; text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff; }
+            85%  { color: #ffffff; text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff; }
+            86%  { color: #0d0d1e; text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 40px #00e5ff, 0 0 80px #00e5ff, 0 0 120px #00e5ff; }
+            87%  { color: #ffffff; text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff; }
+            88%  { color: #0d0d1e; text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 40px #00e5ff, 0 0 80px #00e5ff; }
+            89%  { color: #ffffff; text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff; }
+            90%  { color: #0d0d1e; text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 40px #00e5ff; }
+            100% { color: #ffffff; text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff; }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
 
@@ -332,6 +318,87 @@
             box-shadow: 0 0 15px rgba(108, 117, 125, 0.5);
         }
         
+        .id-helper {
+            display: block;
+            text-align: left;
+            font-size: 0.9em;
+            color: #00e5ff;
+            text-decoration: none;
+            margin-bottom: 20px;
+            margin-top: -10px;
+            cursor: pointer;
+        }
+        .id-helper:hover {
+            color: #ffffff;
+        }
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s;
+        }
+        .modal-overlay:not(.hidden) {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background: rgba(30, 30, 50, 0.9);
+            border: 1px solid rgba(0, 229, 255, 0.5);
+            border-radius: 16px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 0 40px rgba(0, 229, 255, 0.5);
+            position: relative;
+            animation: slideIn 0.4s ease-out;
+            color: #e0e0e0;
+        }
+        .modal-content h2 {
+            margin-top: 0;
+            font-size: 1.5em;
+            animation: none;
+        }
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2em;
+            color: #6c757d;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .modal-close:hover {
+            color: #00e5ff;
+        }
+        .modal-content ol {
+            text-align: left;
+            line-height: 1.6;
+            padding-left: 20px;
+        }
+        .modal-content li {
+            margin-bottom: 10px;
+        }
+        .modal-content img {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-top: 10px;
+        }
+        
+        
         @media (max-width: 600px) {
             body { 
                 padding: 20px 10px;
@@ -366,10 +433,11 @@
       <div class="container-inner">
         
         <div id="step1-user-input" class="step">
-            <div class="header">CHAT PLAYS GAME</div>
+            <div class="header">CỬA HÀNG VẬT PHẨM</div>
             <h2>1. NHẬP ID TIKTOK CỦA BẠN</h2>
             
             <label for="tiktok-id">ID TikTok (Chỉ nhập tên, không có @)</label>
+            <a href="#" class="id-helper" onclick="openModal(event)">(?) Làm sao để tìm ID TikTok của tôi?</a>
             <input type="text" id="tiktok-id" placeholder="ví dụ: ChatPlaysGameOfficial" maxlength="24">
             
             <p class="warning">
@@ -413,6 +481,23 @@
       </div> 
     </div> 
 
+    
+    <div id="id-modal" class="modal-overlay hidden" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <h2>Cách Tìm ID TikTok Của Bạn</h2>
+            <p>ID TikTok (hay Username) là tên <strong>duy nhất</strong> bắt đầu bằng chữ <strong>"@"</strong>.</p>
+            <ol>
+                <li>Mở ứng dụng TikTok và vào tab <strong>"Hồ sơ"</strong> (Profile) ở góc dưới bên phải.</li>
+                <li>ID của bạn chính là dòng chữ <strong>nằm ngay dưới ảnh đại diện</strong>.</li>
+                <li>Ví dụ: <strong>@chatplaysgameofficial</strong></li>
+            </ol>
+            <img src="https://i.imgur.com/g87NA2d.png" alt="Hướng dẫn tìm ID TikTok">
+            <p class="warning" style="margin-top: 15px; text-align: center;">Vui lòng chỉ nhập phần tên (ví dụ: "chatplaysgameofficial"), <strong>KHÔNG</strong> bao gồm ký tự "@".</p>
+        </div>
+    </div>
+
+
     <script>
         const BANK_INFO = {
             BANK_ID: "tpbank",
@@ -453,6 +538,7 @@
         const step1 = document.getElementById('step1-user-input');
         const step2 = document.getElementById('step2-shop');
         const step3 = document.getElementById('step3-qr');
+        const modal = document.getElementById('id-modal');
 
         function initialize3DEffects() {
             const items = document.querySelectorAll('.shop-item');
@@ -580,6 +666,15 @@
             } else {
                 alert('Lỗi: Không tìm thấy ảnh QR để mở.');
             }
+        }
+        
+        function openModal(e) {
+            e.preventDefault();
+            modal.classList.remove('hidden');
+        }
+        
+        function closeModal() {
+            modal.classList.add('hidden');
         }
 
     </script>
