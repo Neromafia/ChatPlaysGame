@@ -9,32 +9,27 @@
     <style>
         /* ========== KEYFRAMES (Hiệu ứng động) ========== */
         
-        /* 1. Nền Vũ Trụ Động (MỚI) */
-        @keyframes move-stars {
-            0% { background-position: 0 0; }
-            100% { background-position: 0 1000px; }
+        /* 1. NỀN PLASMA (MỚI) */
+        @keyframes plasma-flow {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(10%, -10%); }
+            50% { transform: translate(-10%, 10%); }
+            75% { transform: translate(10%, 10%); }
+            100% { transform: translate(0, 0); }
         }
         
-        /* 2. Hiệu ứng "Glitch" cho Tiêu đề (MỚI) */
+        /* 2. Hiệu ứng "Glitch" cho Tiêu đề (Giữ nguyên) */
         @keyframes glitch {
             2%, 64% { transform: translate(2px, 0) skew(0deg); }
             4%, 60% { transform: translate(-2px, 0) skew(0deg); }
             62% { transform: translate(0, 0) skew(5deg); }
         }
 
-        /* ========== GLOBAL STYLES ========== */
+        /* ========== GLOBAL STYLES (Nền MỚI) ========== */
         body {
             font-family: 'Montserrat', sans-serif;
-            /* Nền vũ trụ động (MỚI) */
-            background-color: #000;
-            background-image: 
-                radial-gradient(ellipse at top, rgba(15, 12, 41, 0.8), transparent 60%),
-                radial-gradient(ellipse at bottom, rgba(30, 0, 60, 0.7), transparent 60%),
-                url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMCIgaGVpZ2h0PSIzMCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzAwMCIvPjxjaXJjbGUgY3g9IjEiIGN5PSIxIiByPSIwLjUiIGZpbGw9IiNmZmYiLz48Y2lyY2xlIGN4PSI1IiBjeT0iMyIgcj0iMC4zIiBmaWxsPSIjZmZmIi8+PGNpcmNsZSBjeD0iMTAiIGN5PSI1IiByPSIwLjUiIGZpbGw9IiNmZmYiLz48Y2lyY2xlIGN4PSIxMiIgY3k9IjE1IiByPSIwLjMiIGZpbGw9IiNmZmYiLz48Y2lyY2xlIGN4PSIyMCIgY3k9IjEwIiByPSIwLjUiIGZpbGw9IiNmZmYiLz48Y2lyY2xlIGN4PSIxNSIgY3k9IjI1IiByPSIwLjMiIGZpbGw9IiNmZmYiLz48Y2lyY2xlIGN4PSIyNSIgY3k9IjIwIiByPSIwLjUiIGZpbGw9IiNmZmYiLz48Y2lyY2xlIGN4PSIyIiBjeT0iMjgiIHI9IjAuMyIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==');
-            background-repeat: repeat;
-            background-size: auto, auto, 300px;
-            animation: move-stars 60s linear infinite;
-            
+            /* Nền tĩnh màu đen tuyền */
+            background-color: #000000;
             color: #e0e0e0;
             margin: 0;
             padding: 0;
@@ -44,32 +39,71 @@
             min-height: 100vh;
             padding: 20px;
             box-sizing: border-box;
+            overflow: hidden; /* Rất quan trọng */
+            position: relative; /* Bắt buộc cho nền plasma */
+        }
+        
+        /* Lớp Plasma 1 (Màu Tím) (MỚI) */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -20vh;
+            left: -20vw;
+            width: 140vw;
+            height: 140vh;
+            /* Dải màu Tím */
+            background: radial-gradient(ellipse at center, rgba(118, 7, 255, 0.4) 0%, transparent 60%);
+            animation: plasma-flow 30s ease-in-out infinite;
+            z-index: -1;
+            opacity: 0.8;
+        }
+
+        /* Lớp Plasma 2 (Màu Cyan) (MỚI) */
+        body::after {
+            content: '';
+            position: fixed;
+            top: -20vh;
+            left: -20vw;
+            width: 140vw;
+            height: 140vh;
+            /* Dải màu Cyan */
+            background: radial-gradient(ellipse at center, rgba(0, 229, 255, 0.4) 0%, transparent 60%);
+            /* Chạy animation ngược 15s để tạo chuyển động khác nhau */
+            animation: plasma-flow 30s ease-in-out infinite -15s;
+            z-index: -1;
+            opacity: 0.8;
         }
 
         /* ========== CONTAINER (Hiệu ứng Kính) ========== */
         .container {
             max-width: 650px;
             width: 100%;
-            background: rgba(15, 12, 41, 0.75);
+            /* Tăng độ mờ của kính */
+            background: rgba(15, 12, 41, 0.65);
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
             border-radius: 16px;
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
             border: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
-            max-height: 90vh; /* Giới hạn chiều cao */
+            max-height: 90vh;
         }
 
+        /* Bỏ viền quay, nó quá rối so với nền Plasma */
+        /* .container::before { ... } */
+
         .container-inner {
-            background: rgba(26, 26, 46, 0.5); /* Lớp lót mờ */
+            /* Tăng độ trong suốt của lớp lót */
+            background: rgba(10, 10, 20, 0.3);
             margin: 1px;
             border-radius: 16px;
-            overflow-y: auto; /* Cho phép cuộn bên trong */
+            overflow-y: auto;
             max-height: calc(90vh - 2px); 
         }
 
+        /* (CSS Header, Step, H2, Groups, Items... giữ nguyên) */
         .header {
-            background: transparent; /* Bỏ nền header */
+            background: transparent;
             border-bottom: 1px solid rgba(0, 229, 255, 0.3);
             color: white;
             padding: 25px;
@@ -78,14 +112,11 @@
             font-family: 'Oxanium', sans-serif;
             letter-spacing: 0.05em;
             text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff;
-            /* Thêm hiệu ứng glitch khi hover (MỚI) */
             transition: 0.1s;
         }
         .header:hover {
             animation: glitch 0.2s linear infinite;
         }
-
-        /* (Transition .step giữ nguyên) */
         .step {
             padding: 30px;
             text-align: center;
@@ -102,7 +133,6 @@
             padding-top: 0;
             padding-bottom: 0;
         }
-        
         h2 {
             font-family: 'Oxanium', sans-serif;
             font-weight: 700;
@@ -146,11 +176,8 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 20px;
-            /* Thêm perspective để chứa item 3D (MỚI) */
             perspective: 1000px;
         }
-
-        /* ========== SHOP ITEMS (Hiệu ứng 3D TILT "WOW") ========== */
         .shop-item {
             background: rgba(30, 30, 50, 0.7);
             border-radius: 12px;
@@ -159,14 +186,10 @@
             cursor: pointer;
             border: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
-            overflow: hidden; /* Quan trọng để .glare hoạt động */
-            
-            /* Thêm thiết lập 3D (MỚI) */
+            overflow: hidden;
             transform-style: preserve-3d;
             transition: transform 0.1s linear, box-shadow 0.3s ease, border 0.3s ease;
         }
-        
-        /* Hiệu ứng Phản quang (Glare) (MỚI) */
         .shop-item::before {
             content: '';
             position: absolute;
@@ -180,23 +203,20 @@
             opacity: 0;
             transition: opacity 0.1s linear;
         }
-        
         .shop-item:hover {
+            transform: translateY(-5px) scale(1.03);
             border-color: rgba(0, 229, 255, 0.7);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.4);
         }
-        
         .shop-item:hover::before {
-            opacity: 1; /* Hiện vệt sáng khi hover */
+            opacity: 1;
         }
-
         .item-name {
             font-family: 'Oxanium', sans-serif;
             font-weight: 600;
             font-size: 1.2em;
             color: #ffffff;
             margin-bottom: 8px;
-            /* Giúp text không bị ảnh hưởng bởi 3D cha */
             transform: translateZ(20px);
         }
         .item-price {
@@ -204,11 +224,8 @@
             font-weight: 700;
             font-size: 1.4em;
             text-shadow: 0 0 8px rgba(0, 255, 157, 0.5);
-            /* Giúp text không bị ảnh hưởng bởi 3D cha */
             transform: translateZ(20px);
         }
-
-        /* (Form, QR, Responsive giữ nguyên như cũ) */
         #summary-box {
             background: rgba(15, 12, 41, 0.5);
             border: 1px dashed rgba(255, 255, 255, 0.3);
@@ -277,8 +294,6 @@
             max-width: 100%;
             height: auto;
         }
-        
-        /* ========== BUTTONS (Nâng cấp "HUD") ========== */
         .button {
             font-family: 'Oxanium', sans-serif;
             font-weight: 700;
@@ -312,8 +327,7 @@
             color: white;
             box-shadow: 0 0 15px rgba(108, 117, 125, 0.5);
         }
-
-        /* (Responsive CSS giữ nguyên) */
+        
         @media (max-width: 600px) {
             body { 
                 padding: 20px 10px;
@@ -339,6 +353,7 @@
             .button { padding: 12px 20px; font-size: 1.1em; }
             #qr-image { width: 220px; }
         }
+
     </style>
 </head>
 <body>
@@ -389,7 +404,9 @@
         </div>
 
       </div> </div> <script>
-        // (Cấu hình BANK_INFO và SHOP_GROUPS giữ nguyên)
+        // (Toàn bộ JavaScript giữ nguyên, nó đã hoạt động đúng)
+        
+        // ========== 1. CẤU HÌNH SHOP VÀ NGÂN HÀNG ==========
         const BANK_INFO = {
             BANK_ID: "tpbank",
             ACCOUNT_NO: "88942689999",
@@ -425,12 +442,14 @@
                 ]
             }
         ];
+
+        // ========== 2. CÁC HÀM XỬ LÝ GIAO DIỆN VÀ LOGIC ==========
         
         const step1 = document.getElementById('step1-user-input');
         const step2 = document.getElementById('step2-shop');
         const step3 = document.getElementById('step3-qr');
 
-        // *** THAY ĐỔI: Thêm hàm khởi tạo hiệu ứng 3D ***
+        // *** THÊM HÀM KHỞI TẠO HIỆU ỨNG 3D ***
         function initialize3DEffects() {
             const items = document.querySelectorAll('.shop-item');
             
@@ -446,16 +465,13 @@
                     const rotateX = ((y - centerY) / centerY) * -10; // Max 10 độ
                     const rotateY = ((x - centerX) / centerX) * 10;  // Max 10 độ
                     
-                    // Cập nhật vị trí chuột cho hiệu ứng "Glare"
                     item.style.setProperty('--mouse-x', `${(x / item.offsetWidth) * 100}%`);
                     item.style.setProperty('--mouse-y', `${(y / item.offsetHeight) * 100}%`);
                     
-                    // Áp dụng hiệu ứng 3D Tilt
                     item.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
                 });
                 
                 item.addEventListener('mouseleave', () => {
-                    // Reset về vị trí cũ
                     item.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
                 });
             });
@@ -484,7 +500,7 @@
                 shopContainer.appendChild(gridContainer);
             });
             
-            // *** THAY ĐỔI: Khởi tạo hiệu ứng 3D sau khi shop được vẽ ***
+            // Khởi tạo hiệu ứng 3D sau khi shop được vẽ
             initialize3DEffects(); 
 
             step1.classList.remove('hidden');
@@ -533,6 +549,7 @@
             const template = "print";
             const vietQR_API_URL = "https://img.vietqr.io/image/";
             
+            // Dùng .jpg (đã sửa từ lần trước)
             const fullURL = `${vietQR_API_URL}${BANK_INFO.BANK_ID}-${BANK_INFO.ACCOUNT_NO}-${template}.jpg?amount=${amount}&addInfo=${encodeURIComponent(addInfo)}&accountName=${encodeURIComponent(BANK_INFO.ACCOUNT_NAME)}`;
 
             document.getElementById('qr-image').src = fullURL;
