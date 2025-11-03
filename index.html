@@ -7,67 +7,46 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Oxanium:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* (Keyframes giữ nguyên) */
-        @keyframes animateBg {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        @keyframes spinBorder {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        @keyframes scanLine {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(100%); }
+        /* ========== KEYFRAMES (Hiệu ứng động) ========== */
+        
+        /* 1. Nền Vũ Trụ Động (MỚI) */
+        @keyframes move-stars {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 1000px; }
         }
         
-        /* --- THAY ĐỔI CSS BODY --- */
+        /* 2. Hiệu ứng "Glitch" cho Tiêu đề (MỚI) */
+        @keyframes glitch {
+            2%, 64% { transform: translate(2px, 0) skew(0deg); }
+            4%, 60% { transform: translate(-2px, 0) skew(0deg); }
+            62% { transform: translate(0, 0) skew(5deg); }
+        }
+
+        /* ========== GLOBAL STYLES ========== */
         body {
             font-family: 'Montserrat', sans-serif;
-            background: #0d0d1e;
+            /* Nền vũ trụ động (MỚI) */
+            background-color: #000;
+            background-image: 
+                radial-gradient(ellipse at top, rgba(15, 12, 41, 0.8), transparent 60%),
+                radial-gradient(ellipse at bottom, rgba(30, 0, 60, 0.7), transparent 60%),
+                url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMCIgaGVpZ2h0PSIzMCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzAwMCIvPjxjaXJjbGUgY3g9IjEiIGN5PSIxIiByPSIwLjUiIGZpbGw9IiNmZmYiLz48Y2lyY2xlIGN4PSI1IiBjeT0iMyIgcj0iMC4zIiBmaWxsPSIjZmZmIi8+PGNpcmNsZSBjeD0iMTAiIGN5PSI1IiByPSIwLjUiIGZpbGw9IiNmZmYiLz48Y2lyY2xlIGN4PSIxMiIgY3k9IjE1IiByPSIwLjMiIGZpbGw9IiNmZmYiLz48Y2lyY2xlIGN4PSIyMCIgY3k9IjEwIiByPSIwLjUiIGZpbGw9IiNmZmYiLz48Y2lyY2xlIGN4PSIxNSIgY3k9IjI1IiByPSIwLjMiIGZpbGw9IiNmZmYiLz48Y2lyY2xlIGN4PSIyNSIgY3k9IjIwIiByPSIwLjUiIGZpbGw9IiNmZmYiLz48Y2lyY2xlIGN4PSIyIiBjeT0iMjgiIHI9IjAuMyIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==');
+            background-repeat: repeat;
+            background-size: auto, auto, 300px;
+            animation: move-stars 60s linear infinite;
+            
             color: #e0e0e0;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
-            /* THAY ĐỔI: Căn giữa theo chiều dọc */
-            align-items: center; 
+            align-items: center;
             min-height: 100vh;
-            padding: 20px; /* Padding chung */
+            padding: 20px;
             box-sizing: border-box;
-            overflow: hidden; /* Vẫn khóa cuộn ở body */
-        }
-        
-        /* (Các lớp nền động ::before và ::after giữ nguyên) */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #1c0a2e);
-            background-size: 400% 400%;
-            animation: animateBg 20s ease infinite;
-            z-index: -2;
-        }
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            height: 200%;
-            background: linear-gradient(
-                to bottom,
-                rgba(20, 20, 40, 0) 0%,
-                rgba(30, 220, 255, 0.05) 48%,
-                rgba(30, 220, 255, 0.1) 50%,
-                rgba(30, 220, 255, 0.05) 52%,
-                rgba(20, 20, 40, 0) 100%
-            );
-            animation: scanLine 8s linear infinite;
-            z-index: -1;
-            opacity: 0.5;
         }
 
-        /* --- THAY ĐỔI CSS CONTAINER --- */
+        /* ========== CONTAINER (Hiệu ứng Kính) ========== */
         .container {
             max-width: 650px;
             width: 100%;
@@ -78,43 +57,19 @@
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
             border: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
-            overflow: hidden;
-            /* THAY ĐỔI: Giới hạn chiều cao tối đa của khung */
-            max-height: 90vh; 
+            max-height: 90vh; /* Giới hạn chiều cao */
         }
 
-        /* (Viền Neon ::before giữ nguyên) */
-        .container::before {
-            content: '';
-            position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: conic-gradient(
-                transparent,
-                transparent,
-                #00e5ff,
-                #ff00f3,
-                #00e5ff,
-                transparent
-            );
-            animation: spinBorder 6s linear infinite;
-            z-index: -1;
-        }
-
-        /* --- THAY ĐỔI CSS CONTAINER-INNER --- */
         .container-inner {
-            background: #1a1a2e;
+            background: rgba(26, 26, 46, 0.5); /* Lớp lót mờ */
             margin: 1px;
             border-radius: 16px;
-            /* THAY ĐỔI: CHO PHÉP CUỘN BÊN TRONG */
-            overflow-y: auto;
-            /* THAY ĐỔI: Giới hạn chiều cao để khớp với container */
+            overflow-y: auto; /* Cho phép cuộn bên trong */
             max-height: calc(90vh - 2px); 
         }
 
-        /* (CSS Header, Step, H2, Groups, Items... giữ nguyên) */
         .header {
-            background: rgba(0, 229, 255, 0.1);
+            background: transparent; /* Bỏ nền header */
             border-bottom: 1px solid rgba(0, 229, 255, 0.3);
             color: white;
             padding: 25px;
@@ -123,7 +78,14 @@
             font-family: 'Oxanium', sans-serif;
             letter-spacing: 0.05em;
             text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff;
+            /* Thêm hiệu ứng glitch khi hover (MỚI) */
+            transition: 0.1s;
         }
+        .header:hover {
+            animation: glitch 0.2s linear infinite;
+        }
+
+        /* (Transition .step giữ nguyên) */
         .step {
             padding: 30px;
             text-align: center;
@@ -140,6 +102,7 @@
             padding-top: 0;
             padding-bottom: 0;
         }
+        
         h2 {
             font-family: 'Oxanium', sans-serif;
             font-weight: 700;
@@ -183,36 +146,69 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 20px;
+            /* Thêm perspective để chứa item 3D (MỚI) */
+            perspective: 1000px;
         }
+
+        /* ========== SHOP ITEMS (Hiệu ứng 3D TILT "WOW") ========== */
         .shop-item {
             background: rgba(30, 30, 50, 0.7);
             border-radius: 12px;
             padding: 20px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s ease;
             border: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
-            overflow: hidden;
+            overflow: hidden; /* Quan trọng để .glare hoạt động */
+            
+            /* Thêm thiết lập 3D (MỚI) */
+            transform-style: preserve-3d;
+            transition: transform 0.1s linear, box-shadow 0.3s ease, border 0.3s ease;
         }
+        
+        /* Hiệu ứng Phản quang (Glare) (MỚI) */
+        .shop-item::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: radial-gradient(
+                circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+                rgba(255, 255, 255, 0.2) 0%,
+                rgba(255, 255, 255, 0) 40%
+            );
+            opacity: 0;
+            transition: opacity 0.1s linear;
+        }
+        
         .shop-item:hover {
-            transform: translateY(-5px) scale(1.03);
             border-color: rgba(0, 229, 255, 0.7);
-            box-shadow: 0 0 25px rgba(0, 229, 255, 0.4);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
+        
+        .shop-item:hover::before {
+            opacity: 1; /* Hiện vệt sáng khi hover */
+        }
+
         .item-name {
             font-family: 'Oxanium', sans-serif;
             font-weight: 600;
             font-size: 1.2em;
             color: #ffffff;
             margin-bottom: 8px;
+            /* Giúp text không bị ảnh hưởng bởi 3D cha */
+            transform: translateZ(20px);
         }
         .item-price {
             color: #00ff9d;
             font-weight: 700;
             font-size: 1.4em;
             text-shadow: 0 0 8px rgba(0, 255, 157, 0.5);
+            /* Giúp text không bị ảnh hưởng bởi 3D cha */
+            transform: translateZ(20px);
         }
+
+        /* (Form, QR, Responsive giữ nguyên như cũ) */
         #summary-box {
             background: rgba(15, 12, 41, 0.5);
             border: 1px dashed rgba(255, 255, 255, 0.3);
@@ -281,6 +277,8 @@
             max-width: 100%;
             height: auto;
         }
+        
+        /* ========== BUTTONS (Nâng cấp "HUD") ========== */
         .button {
             font-family: 'Oxanium', sans-serif;
             font-weight: 700;
@@ -297,6 +295,7 @@
             letter-spacing: 0.05em;
             text-shadow: none;
             box-shadow: 0 0 15px rgba(0, 229, 255, 0.5);
+            position: relative;
         }
         .button:hover {
             transform: translateY(-3px) scale(1.02);
@@ -313,18 +312,19 @@
             color: white;
             box-shadow: 0 0 15px rgba(108, 117, 125, 0.5);
         }
-        
+
+        /* (Responsive CSS giữ nguyên) */
         @media (max-width: 600px) {
             body { 
                 padding: 20px 10px;
-                align-items: center; /* Đảm bảo căn giữa trên mobile */
+                align-items: center; 
             }
             .container { 
                 width: 95%;
-                max-height: 90vh; /* Giữ giới hạn chiều cao */
+                max-height: 90vh;
             }
             .container-inner {
-                max-height: calc(90vh - 2px); /* Giữ giới hạn chiều cao */
+                max-height: calc(90vh - 2px);
             }
             .header { font-size: 1.5em; padding: 20px; }
             h2 { font-size: 1.4em; margin-bottom: 20px; }
@@ -339,7 +339,6 @@
             .button { padding: 12px 20px; font-size: 1.1em; }
             #qr-image { width: 220px; }
         }
-
     </style>
 </head>
 <body>
@@ -361,7 +360,8 @@
             <button class="button" onclick="goToShop()">TIẾP TỤC CHỌN GÓI</button>
         </div>
 
-        <div id="step2-shop" class="step hidden"> <div class="header">CHỌN GÓI NẠP</div>
+        <div id="step2-shop" class="step hidden">
+            <div class="header">CHỌN GÓI NẠP</div>
             <h2>2. VUI LÒNG CHỌN GÓI</h2>
             
             <div id="summary-box">
@@ -377,8 +377,8 @@
             <button class="button button-secondary" onclick="goBackToEnterId()">&#x2190; Quay lại (Đổi ID)</button>
         </div>
 
-
-        <div id="step3-qr" class="step hidden"> <div class="header">HOÀN TẤT THANH TOÁN</div>
+        <div id="step3-qr" class="step hidden">
+            <div class="header">HOÀN TẤT THANH TOÁN</div>
             <h2>3. QUÉT MÃ VIETQR</h2>
             <p style="font-size: 0.95em; color: #bbbbbb;">Sử dụng App Ngân hàng để quét mã. Vật phẩm sẽ được gửi vào tài khoản TikTok của bạn sau 1-2 phút.</p>
             
@@ -389,9 +389,7 @@
         </div>
 
       </div> </div> <script>
-        // (Toàn bộ JavaScript giữ nguyên, nó đã hoạt động đúng)
-        
-        // ========== 1. CẤU HÌNH SHOP VÀ NGÂN HÀNG ==========
+        // (Cấu hình BANK_INFO và SHOP_GROUPS giữ nguyên)
         const BANK_INFO = {
             BANK_ID: "tpbank",
             ACCOUNT_NO: "88942689999",
@@ -427,12 +425,41 @@
                 ]
             }
         ];
-
-        // ========== 2. CÁC HÀM XỬ LÝ GIAO DIỆN VÀ LOGIC ==========
         
         const step1 = document.getElementById('step1-user-input');
         const step2 = document.getElementById('step2-shop');
         const step3 = document.getElementById('step3-qr');
+
+        // *** THAY ĐỔI: Thêm hàm khởi tạo hiệu ứng 3D ***
+        function initialize3DEffects() {
+            const items = document.querySelectorAll('.shop-item');
+            
+            items.forEach(item => {
+                item.addEventListener('mousemove', (e) => {
+                    const rect = item.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const centerX = item.offsetWidth / 2;
+                    const centerY = item.offsetHeight / 2;
+                    
+                    const rotateX = ((y - centerY) / centerY) * -10; // Max 10 độ
+                    const rotateY = ((x - centerX) / centerX) * 10;  // Max 10 độ
+                    
+                    // Cập nhật vị trí chuột cho hiệu ứng "Glare"
+                    item.style.setProperty('--mouse-x', `${(x / item.offsetWidth) * 100}%`);
+                    item.style.setProperty('--mouse-y', `${(y / item.offsetHeight) * 100}%`);
+                    
+                    // Áp dụng hiệu ứng 3D Tilt
+                    item.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+                });
+                
+                item.addEventListener('mouseleave', () => {
+                    // Reset về vị trí cũ
+                    item.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+                });
+            });
+        }
 
         window.onload = function() {
             const shopContainer = document.getElementById('shop-container');
@@ -456,6 +483,10 @@
                 });
                 shopContainer.appendChild(gridContainer);
             });
+            
+            // *** THAY ĐỔI: Khởi tạo hiệu ứng 3D sau khi shop được vẽ ***
+            initialize3DEffects(); 
+
             step1.classList.remove('hidden');
             step2.classList.add('hidden');
             step3.classList.add('hidden');
@@ -502,7 +533,6 @@
             const template = "print";
             const vietQR_API_URL = "https://img.vietqr.io/image/";
             
-            // Dùng .jpg (đã sửa từ lần trước)
             const fullURL = `${vietQR_API_URL}${BANK_INFO.BANK_ID}-${BANK_INFO.ACCOUNT_NO}-${template}.jpg?amount=${amount}&addInfo=${encodeURIComponent(addInfo)}&accountName=${encodeURIComponent(BANK_INFO.ACCOUNT_NAME)}`;
 
             document.getElementById('qr-image').src = fullURL;
