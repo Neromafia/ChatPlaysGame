@@ -501,7 +501,7 @@
 
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
 
     <div class="container">
       <div class="container-inner">
@@ -746,7 +746,7 @@
             const addInfo = `${sku} ${tiktokId}`;
             const amount = price;
             
-            const template = "compact";
+            const template = "print";
             const vietQR_API_URL = "https://img.vietqr.io/image/";
             
             const fullURL = `${vietQR_API_URL}${BANK_INFO.BANK_ID}-${BANK_INFO.ACCOUNT_NO}-${template}.jpg?amount=${amount}&addInfo=${encodeURIComponent(addInfo)}&accountName=${encodeURIComponent(BANK_INFO.ACCOUNT_NAME)}`;
@@ -810,4 +810,3 @@
     </script>
 </body>
 </html>
-
