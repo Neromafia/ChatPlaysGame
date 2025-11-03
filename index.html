@@ -369,6 +369,7 @@
             margin-top: 0;
             font-size: 1.5em;
             animation: none;
+            text-align: center;
         }
         .modal-close {
             position: absolute;
@@ -429,12 +430,12 @@
             <div class="header">CỬA HÀNG VẬT PHẨM</div>
             <h2>1. NHẬP ID TIKTOK CỦA BẠN</h2>
             
-            <label for="tiktok-id">ID TikTok (Chỉ nhập tên, không có @)</label>
-            <a href="#" class="id-helper" onclick="openModal(event)">(?) Làm sao để tìm ID TikTok của tôi?</a>
-            <input type="text" id="tiktok-id" placeholder="ví dụ: chatplaysgame" maxlength="24">
+            <label for="tiktok-id">Dán ID TikTok của bạn vào đây</label>
+            <a href="#" class="id-helper" onclick="openModal(event)">(?) Làm sao để Sao Chép ID?</a>
+            <input type="text" id="tiktok-id" placeholder="ví dụ: @chatplaysgame" maxlength="30">
             
             <p class="warning">
-                ⚠️ CẢNH BÁO: KIỂM TRA KỸ ID TIKTOK! NẾU BẠN GÕ SAI, VẬT PHẨM SẼ BỊ GỬI NHẦM VÀ CHÚNG TÔI KHÔNG THỂ HỖ TRỢ.
+                ⚠️ VÀO HỒ SƠ TIKTOK, SAO CHÉP ID CỦA BẠN (BAO GỒM CẢ "@") VÀ DÁN VÀO ĐÂY.
             </p>
             
             <button class="button" onclick="goToShop()">TIẾP TỤC CHỌN GÓI</button>
@@ -478,15 +479,15 @@
     <div id="id-modal" class="modal-overlay hidden" onclick="closeModal()">
         <div class="modal-content" onclick="event.stopPropagation()">
             <span class="modal-close" onclick="closeModal()">&times;</span>
-            <h2>Cách Tìm ID TikTok Của Bạn</h2>
+            <h2>Cách Sao Chép ID TikTok</h2>
             <p>ID TikTok (hay Username) là tên <strong>duy nhất</strong> bắt đầu bằng chữ <strong>"@"</strong>.</p>
             <ol>
-                <li>Mở ứng dụng TikTok và vào tab <strong>"Hồ sơ"</strong> (Profile) ở góc dưới bên phải.</li>
+                <li>Mở ứng dụng TikTok và vào tab <strong>"Hồ sơ"</strong> (Profile).</li>
                 <li>ID của bạn chính là dòng chữ <strong>nằm ngay dưới ảnh đại diện</strong>.</li>
-                <li>Ví dụ: <strong>@chatplaysgame</strong></li>
+                <li>Nhấn vào ID đó (ví dụ: <strong>@chatplaysgame</strong>) để tự động sao chép.</li>
             </ol>
             
-            <p class="warning" style="margin-top: 15px; text-align: center;">Vui lòng chỉ nhập phần tên (ví dụ: "chatplaysgame"), <strong>KHÔNG</strong> bao gồm ký tự "@".</p>
+            <p class="warning" style="margin-top: 15px; text-align: center;">Bạn chỉ cần <strong>Dán (Paste)</strong> ID vừa sao chép vào ô nhập. Trang web sẽ tự động xử lý.</p>
         </div>
     </div>
 
