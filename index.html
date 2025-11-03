@@ -6,7 +6,7 @@
     <title>Cửa Hàng Vật Phẩm - ChatPlaysGame</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* (CSS cũ giữ nguyên) */
+        /* (Toàn bộ CSS giữ nguyên như cũ... ) */
         body {
             font-family: 'Roboto', sans-serif;
             background: linear-gradient(135deg, #1e1e2d 0%, #0a0a1a 100%);
@@ -68,17 +68,14 @@
             background-color: #007bff;
             border-radius: 2px;
         }
-
-        /* --- THAY ĐỔI CSS --- */
         
-        /* 1. CSS MỚI: Tiêu đề cho từng nhóm */
         .group-title {
             font-family: 'Montserrat', sans-serif;
             font-weight: 600;
             font-size: 1.4em;
             color: #ffffff;
             text-align: left;
-            margin-top: 30px; /* (Chỉ áp dụng cho nhóm đầu tiên) */
+            margin-top: 30px;
             margin-bottom: 15px;
             padding-bottom: 5px;
             border-bottom: 2px solid #4a4a6e;
@@ -87,20 +84,16 @@
              margin-top: 0;
         }
 
-        /* 2. SỬA LẠI: #shop-container không còn là grid nữa */
         #shop-container {
             margin-top: 30px;
-            /* Xóa: display: grid và gap */
         }
 
-        /* 3. CSS MỚI: Lưới cho các item (lấy style cũ của #shop-container) */
         .shop-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 20px;
         }
 
-        /* (CSS cho .shop-item và các thành phần khác giữ nguyên) */
         .shop-item {
             background-color: #3b3b5b;
             border-radius: 10px;
@@ -258,7 +251,6 @@
             .header { font-size: 1.5em; padding: 20px; }
             h2 { font-size: 1.3em; margin-bottom: 20px; }
             .step { padding: 20px; }
-            /* Sửa lại CSS Responsive */
             .shop-grid { 
                 grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); 
                 gap: 10px; 
@@ -316,7 +308,8 @@
             
             <img id="qr-image" src="" alt="Đang tạo mã QR..." referrerpolicy="no-referrer">
             
-            <button class="button" onclick="goBackToShop()">Nạp gói khác / Quay lại Shop</button>
+            <button class="button" onclick="openQRImage()">Mở/Tải ảnh QR</button>
+            <button class="button button-secondary" onclick="goBackToShop()">Nạp gói khác / Quay lại Shop</button>
         </div>
 
     </div>
@@ -330,8 +323,7 @@
             ACCOUNT_NAME: "NGUYEN TRAN HIEU NHAN" // <-- Tên chủ TK
         };
 
-        // *** THAY ĐỔI CẤU TRÚC DỮ LIỆU ***
-        // (Thay vì SHOP_ITEMS, chúng ta dùng SHOP_GROUPS)
+        // Cấu trúc dữ liệu Nhóm
         const SHOP_GROUPS = [
             {
                 groupName: "Gói Combo (Key + Box)",
@@ -347,6 +339,7 @@
                     { sku: 'KEY1', name: 'Gói 1 Key', price: 10000, description: 'Mở khóa 1 Chìa Khóa' },
                     { sku: 'KEY2', name: 'Gói 6 Keys', price: 50000, description: 'Gói chìa khóa lớn hơn' },
                     { sku: 'KEY3', name: 'Gói 13 Keys', price: 100000, description: 'Số lượng chìa khóa lớn' },
+                    { sku: 'KEY4', name: 'Gói Key Khủng', price: 500000, description: 'Gói chìa khóa lớn nhất (500k)' },
                     { sku: 'BOX1', name: 'Gói 1 Box', price: 5000, description: 'Mở khóa 1 Hộp May Mắn' }
                 ]
             },
@@ -364,28 +357,22 @@
 
         // ========== 2. CÁC HÀM XỬ LÝ GIAO DIỆN VÀ LOGIC ==========
 
-        // *** CẬP NHẬT HÀM: window.onload ***
-        // (Tải trang: Tạo shop theo nhóm, hiển thị bước 1)
+        // (Hàm này giữ nguyên)
         window.onload = function() {
             const shopContainer = document.getElementById('shop-container');
-            shopContainer.innerHTML = ''; // Xóa sạch nội dung cũ
+            shopContainer.innerHTML = ''; 
 
-            // Lặp qua từng NHÓM
             SHOP_GROUPS.forEach(group => {
-                // 1. Tạo tiêu đề nhóm
                 const groupTitle = document.createElement('h3');
                 groupTitle.className = 'group-title';
                 groupTitle.innerText = group.groupName;
                 shopContainer.appendChild(groupTitle);
 
-                // 2. Tạo lưới (grid) cho các item
                 const gridContainer = document.createElement('div');
                 gridContainer.className = 'shop-grid';
 
-                // 3. Lặp qua các ITEM trong nhóm
                 group.items.forEach(item => {
                     const formattedPrice = item.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-                    // Lưu ý: onclick="selectItem(...)" giữ nguyên
                     const itemHTML = `
                         <div class="shop-item" onclick="selectItem('${item.sku}', ${item.price}, '${item.name}', '${item.description}')">
                             <div class="item-name">${item.name}</div>
@@ -395,11 +382,9 @@
                     gridContainer.innerHTML += itemHTML;
                 });
                 
-                // Thêm lưới vào container shop
                 shopContainer.appendChild(gridContainer);
             });
 
-            // (Phần logic hiển thị các bước giữ nguyên)
             document.getElementById('step1-user-input').style.display = 'block';
             document.getElementById('step2-shop').style.display = 'none';
             document.getElementById('step3-qr').style.display = 'none';
@@ -437,7 +422,6 @@
             
             document.getElementById('step2-shop').scrollIntoView({ behavior: 'smooth' });
         }
-
 
         // (Hàm này giữ nguyên)
         function selectItem(sku, price, name, description) {
@@ -482,6 +466,18 @@
             document.getElementById('qr-image').src = '';
             
             document.getElementById('step2-shop').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // *** HÀM MỚI ĐƯỢC THÊM VÀO ***
+        // (Mở ảnh QR trong tab mới để người dùng lưu lại)
+        function openQRImage() {
+            const qrImageSrc = document.getElementById('qr-image').src;
+            if (qrImageSrc) {
+                // Mở URL của ảnh trong một tab mới
+                window.open(qrImageSrc, '_blank');
+            } else {
+                alert('Lỗi: Không tìm thấy ảnh QR để mở.');
+            }
         }
 
     </script>
