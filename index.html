@@ -7,45 +7,39 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Oxanium:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* ========== KEYFRAMES (Hiệu ứng động) ========== */
-        
-        /* 1. Nền Gradient động */
+        /* (Keyframes giữ nguyên) */
         @keyframes animateBg {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-
-        /* 2. Viền Neon quay (MỚI) */
         @keyframes spinBorder {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
-        /* 3. Lằn quét (Scan line) (MỚI) */
         @keyframes scanLine {
             0% { transform: translateY(-100%); }
             100% { transform: translateY(100%); }
         }
         
-        /* ========== GLOBAL STYLES ========== */
+        /* --- THAY ĐỔI CSS BODY --- */
         body {
-            /* THAY ĐỔI FONT: Dùng Montserrat làm font chính */
             font-family: 'Montserrat', sans-serif;
-            background: #0d0d1e; /* Nền tĩnh màu tối */
+            background: #0d0d1e;
             color: #e0e0e0;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
-            align-items: flex-start;
+            /* THAY ĐỔI: Căn giữa theo chiều dọc */
+            align-items: center; 
             min-height: 100vh;
-            padding: 50px 20px;
+            padding: 20px; /* Padding chung */
             box-sizing: border-box;
-            overflow: hidden; /* Ẩn nền động bị tràn */
+            overflow: hidden; /* Vẫn khóa cuộn ở body */
         }
         
-        /* Thêm 2 lớp nền động (MỚI) */
+        /* (Các lớp nền động ::before và ::after giữ nguyên) */
         body::before {
             content: '';
             position: fixed;
@@ -55,13 +49,11 @@
             animation: animateBg 20s ease infinite;
             z-index: -2;
         }
-
-        /* Thêm hiệu ứng lằn quét (MỚI) */
         body::after {
             content: '';
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            height: 200%; /* Cao gấp đôi để quét */
+            height: 200%;
             background: linear-gradient(
                 to bottom,
                 rgba(20, 20, 40, 0) 0%,
@@ -75,28 +67,28 @@
             opacity: 0.5;
         }
 
-        /* ========== CONTAINER (Nâng cấp "Wow") ========== */
+        /* --- THAY ĐỔI CSS CONTAINER --- */
         .container {
             max-width: 650px;
             width: 100%;
-            /* Hiệu ứng kính mờ */
             background: rgba(15, 12, 41, 0.75);
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
             border-radius: 16px;
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative; /* Bắt buộc cho viền neon */
-            overflow: hidden; /* Bắt buộc cho viền neon */
+            position: relative;
+            overflow: hidden;
+            /* THAY ĐỔI: Giới hạn chiều cao tối đa của khung */
+            max-height: 90vh; 
         }
 
-        /* Viền Neon Động (MỚI) */
+        /* (Viền Neon ::before giữ nguyên) */
         .container::before {
             content: '';
             position: absolute;
             top: -50%; left: -50%;
             width: 200%; height: 200%;
-            /* Viền quay conic */
             background: conic-gradient(
                 transparent,
                 transparent,
@@ -109,28 +101,29 @@
             z-index: -1;
         }
 
-        /* Thêm một lớp lót màu đen (MỚI) */
+        /* --- THAY ĐỔI CSS CONTAINER-INNER --- */
         .container-inner {
             background: #1a1a2e;
-            margin: 1px; /* Tạo ra hiệu ứng viền 1px */
+            margin: 1px;
             border-radius: 16px;
+            /* THAY ĐỔI: CHO PHÉP CUỘN BÊN TRONG */
+            overflow-y: auto;
+            /* THAY ĐỔI: Giới hạn chiều cao để khớp với container */
+            max-height: calc(90vh - 2px); 
         }
 
+        /* (CSS Header, Step, H2, Groups, Items... giữ nguyên) */
         .header {
             background: rgba(0, 229, 255, 0.1);
             border-bottom: 1px solid rgba(0, 229, 255, 0.3);
             color: white;
             padding: 25px;
             text-align: center;
-            font-size: 2.0em; /* To hơn 1 chút */
-            /* THAY ĐỔI FONT: Dùng Oxanium */
+            font-size: 2.0em;
             font-family: 'Oxanium', sans-serif;
             letter-spacing: 0.05em;
-            /* Hiệu ứng chữ phát sáng mạnh hơn */
             text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff;
         }
-
-        /* ========== HIỆU ỨNG CHUYỂN CẢNH (Transition) ========== */
         .step {
             padding: 30px;
             text-align: center;
@@ -140,7 +133,6 @@
             transition: opacity 0.5s ease-out, max-height 0.5s ease-out, visibility 0.5s, padding 0.5s ease-out;
             overflow: hidden;
         }
-        
         .step.hidden {
             opacity: 0;
             visibility: hidden;
@@ -148,9 +140,7 @@
             padding-top: 0;
             padding-bottom: 0;
         }
-
         h2 {
-            /* THAY ĐỔI FONT: Dùng Oxanium */
             font-family: 'Oxanium', sans-serif;
             font-weight: 700;
             font-size: 1.8em;
@@ -168,15 +158,11 @@
             bottom: 0;
             width: 60px;
             height: 3px;
-            /* Gradient Neon mới */
             background: linear-gradient(90deg, #00e5ff, #ff00f3);
             border-radius: 2px;
             box-shadow: 0 0 10px rgba(0, 229, 255, 0.5), 0 0 10px rgba(255, 0, 243, 0.5);
         }
-        
-        /* ========== SHOP ITEMS (Nâng cấp "Wow") ========== */
         .group-title {
-            /* THAY ĐỔI FONT: Dùng Oxanium */
             font-family: 'Oxanium', sans-serif;
             font-weight: 600;
             font-size: 1.5em;
@@ -190,17 +176,14 @@
         .group-title:first-of-type {
              margin-top: 0;
         }
-
         #shop-container {
             margin-top: 30px;
         }
-
         .shop-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 20px;
         }
-
         .shop-item {
             background: rgba(30, 30, 50, 0.7);
             border-radius: 12px;
@@ -214,12 +197,10 @@
         }
         .shop-item:hover {
             transform: translateY(-5px) scale(1.03);
-            /* Viền Neon mạnh hơn */
             border-color: rgba(0, 229, 255, 0.7);
             box-shadow: 0 0 25px rgba(0, 229, 255, 0.4);
         }
         .item-name {
-            /* THAY ĐỔI FONT: Dùng Oxanium */
             font-family: 'Oxanium', sans-serif;
             font-weight: 600;
             font-size: 1.2em;
@@ -227,14 +208,11 @@
             margin-bottom: 8px;
         }
         .item-price {
-            /* Màu Neon Green */
             color: #00ff9d;
             font-weight: 700;
             font-size: 1.4em;
             text-shadow: 0 0 8px rgba(0, 255, 157, 0.5);
         }
-
-        /* ========== FORM (Nâng cấp) ========== */
         #summary-box {
             background: rgba(15, 12, 41, 0.5);
             border: 1px dashed rgba(255, 255, 255, 0.3);
@@ -255,9 +233,8 @@
         }
         .summary-row span:last-child { 
             font-weight: 700; 
-            color: #00ff9d; /* Neon Green */
+            color: #00ff9d;
         }
-        
         label {
             display: block;
             text-align: left;
@@ -285,21 +262,18 @@
             box-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
         }
         .warning {
-            color: #ff4d6d; /* Neon Red/Pink */
+            color: #ff4d6d;
             font-weight: 600;
             margin-bottom: 25px;
             font-size: 0.95em;
             line-height: 1.4;
             text-shadow: 0 0 5px rgba(255, 77, 109, 0.5);
         }
-        
-        /* ========== QR (Nâng cấp) ========== */
         #qr-container {
             text-align: center;
         }
         #qr-image {
             width: 280px;
-            height: 280px;
             border: 4px solid #00e5ff;
             border-radius: 12px;
             box-shadow: 0 0 30px rgba(0, 229, 255, 0.6);
@@ -307,10 +281,7 @@
             max-width: 100%;
             height: auto;
         }
-
-        /* ========== BUTTONS (Nâng cấp) ========== */
         .button {
-            /* THAY ĐỔI FONT: Dùng Oxanium */
             font-family: 'Oxanium', sans-serif;
             font-weight: 700;
             background: linear-gradient(90deg, #00e5ff, #00aaff);
@@ -343,10 +314,18 @@
             box-shadow: 0 0 15px rgba(108, 117, 125, 0.5);
         }
         
-        /* Responsive */
         @media (max-width: 600px) {
-            body { padding: 20px 10px; }
-            .container { width: 95%; }
+            body { 
+                padding: 20px 10px;
+                align-items: center; /* Đảm bảo căn giữa trên mobile */
+            }
+            .container { 
+                width: 95%;
+                max-height: 90vh; /* Giữ giới hạn chiều cao */
+            }
+            .container-inner {
+                max-height: calc(90vh - 2px); /* Giữ giới hạn chiều cao */
+            }
             .header { font-size: 1.5em; padding: 20px; }
             h2 { font-size: 1.4em; margin-bottom: 20px; }
             .step { padding: 20px; }
@@ -358,7 +337,7 @@
             .item-price { font-size: 1.2em; }
             input[type="text"] { font-size: 1em; padding: 12px; }
             .button { padding: 12px 20px; font-size: 1.1em; }
-            #qr-image { width: 220px; height: 220px; }
+            #qr-image { width: 220px; }
         }
 
     </style>
@@ -410,15 +389,14 @@
         </div>
 
       </div> </div> <script>
-        // ========== 1. CẤU HÌNH SHOP VÀ NGÂN HÀNG (Dữ liệu của bạn) ==========
+        // (Toàn bộ JavaScript giữ nguyên, nó đã hoạt động đúng)
         
+        // ========== 1. CẤU HÌNH SHOP VÀ NGÂN HÀNG ==========
         const BANK_INFO = {
-            BANK_ID: "tpbank",     // Dùng tên ngân hàng
-            ACCOUNT_NO: "88942689999", // STK của bạn
-            ACCOUNT_NAME: "NGUYEN TRAN HIEU NHAN" // <-- Tên chủ TK
+            BANK_ID: "tpbank",
+            ACCOUNT_NO: "88942689999",
+            ACCOUNT_NAME: "NGUYEN TRAN HIEU NHAN"
         };
-
-        // Cấu trúc dữ liệu Nhóm
         const SHOP_GROUPS = [
             {
                 groupName: "Gói Combo (Key + Box)",
@@ -452,9 +430,6 @@
 
         // ========== 2. CÁC HÀM XỬ LÝ GIAO DIỆN VÀ LOGIC ==========
         
-        // (Logic JavaScript giữ nguyên 100% so với lần trước,
-        //  chỉ thay đổi cách ẩn/hiện bằng classList)
-        
         const step1 = document.getElementById('step1-user-input');
         const step2 = document.getElementById('step2-shop');
         const step3 = document.getElementById('step3-qr');
@@ -462,16 +437,13 @@
         window.onload = function() {
             const shopContainer = document.getElementById('shop-container');
             shopContainer.innerHTML = ''; 
-
             SHOP_GROUPS.forEach(group => {
                 const groupTitle = document.createElement('h3');
                 groupTitle.className = 'group-title';
                 groupTitle.innerText = group.groupName;
                 shopContainer.appendChild(groupTitle);
-
                 const gridContainer = document.createElement('div');
                 gridContainer.className = 'shop-grid';
-
                 group.items.forEach(item => {
                     const formattedPrice = item.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
                     const itemHTML = `
@@ -482,14 +454,11 @@
                     `;
                     gridContainer.innerHTML += itemHTML;
                 });
-                
                 shopContainer.appendChild(gridContainer);
             });
-
             step1.classList.remove('hidden');
             step2.classList.add('hidden');
             step3.classList.add('hidden');
-
             const savedId = sessionStorage.getItem('tiktokId');
             if (savedId) {
                 document.getElementById('tiktok-id').value = savedId;
@@ -499,7 +468,6 @@
         function goToShop() {
             const tiktokIdInput = document.getElementById('tiktok-id');
             let tiktokId = tiktokIdInput.value;
-
             if (!tiktokId) {
                 alert('Vui lòng nhập ID TikTok của bạn!');
                 tiktokIdInput.focus();
@@ -510,16 +478,12 @@
                 tiktokIdInput.focus();
                 return;
             }
-
             tiktokId = tiktokId.replace('@', '').trim().toUpperCase();
             sessionStorage.setItem('tiktokId', tiktokId);
-
             document.getElementById('summary-id').innerText = tiktokId;
-            
             step1.classList.add('hidden');
             step2.classList.remove('hidden');
             step3.classList.add('hidden');
-            
             document.getElementById('step2-shop').scrollIntoView({ behavior: 'smooth' });
         }
 
@@ -537,7 +501,9 @@
             
             const template = "print";
             const vietQR_API_URL = "https://img.vietqr.io/image/";
-            const fullURL = `${vietQR_API_URL}${BANK_INFO.BANK_ID}-${BANK_INFO.ACCOUNT_NO}-${template}.png?amount=${amount}&addInfo=${encodeURIComponent(addInfo)}&accountName=${encodeURIComponent(BANK_INFO.ACCOUNT_NAME)}`;
+            
+            // Dùng .jpg (đã sửa từ lần trước)
+            const fullURL = `${vietQR_API_URL}${BANK_INFO.BANK_ID}-${BANK_INFO.ACCOUNT_NO}-${template}.jpg?amount=${amount}&addInfo=${encodeURIComponent(addInfo)}&accountName=${encodeURIComponent(BANK_INFO.ACCOUNT_NAME)}`;
 
             document.getElementById('qr-image').src = fullURL;
 
@@ -552,7 +518,6 @@
             step1.classList.remove('hidden');
             step2.classList.add('hidden');
             step3.classList.add('hidden');
-            
             document.getElementById('step1-user-input').scrollIntoView({ behavior: 'smooth' });
         }
 
@@ -560,9 +525,7 @@
             step1.classList.add('hidden');
             step2.classList.remove('hidden');
             step3.classList.add('hidden');
-            
             document.getElementById('qr-image').src = '';
-            
             document.getElementById('step2-shop').scrollIntoView({ behavior: 'smooth' });
         }
 
